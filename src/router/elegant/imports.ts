@@ -20,5 +20,13 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   500: () => import("@/views/_builtin/500/index.vue"),
   "iframe-page": () => import("@/views/_builtin/iframe-page/[url].vue"),
   login: () => import("@/views/_builtin/login/index.vue"),
+  gb_device: () => import("@/views/gb/device/index.vue"),
   home: () => import("@/views/home/index.vue"),
+  live_video: () => import("@/views/live/video/index.vue"),
+  "media_pull-stream": () => import("@/views/media/pull-stream/index.vue"),
+  "media_push-stream": () => import("@/views/media/push-stream/index.vue"),
+  node_zlm: () => import("@/views/node/zlm/index.vue"),
+  onvif_device: () => import("@/views/onvif/device/index.vue"),
+  record_video: () => import("@/views/record/video/index.vue"),
+  system_user: () => import("@/views/system/user/index.vue"),
 };

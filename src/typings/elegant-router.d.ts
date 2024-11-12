@@ -20,9 +20,24 @@ declare module "@elegant-router/types" {
     "403": "/403";
     "404": "/404";
     "500": "/500";
+    "gb": "/gb";
+    "gb_device": "/gb/device";
     "home": "/home";
     "iframe-page": "/iframe-page/:url";
+    "live": "/live";
+    "live_video": "/live/video";
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
+    "media": "/media";
+    "media_pull-stream": "/media/pull-stream";
+    "media_push-stream": "/media/push-stream";
+    "node": "/node";
+    "node_zlm": "/node/zlm";
+    "onvif": "/onvif";
+    "onvif_device": "/onvif/device";
+    "record": "/record";
+    "record_video": "/record/video";
+    "system": "/system";
+    "system_user": "/system/user";
   };
 
   /**
@@ -57,9 +72,16 @@ declare module "@elegant-router/types" {
     | "403"
     | "404"
     | "500"
+    | "gb"
     | "home"
     | "iframe-page"
+    | "live"
     | "login"
+    | "media"
+    | "node"
+    | "onvif"
+    | "record"
+    | "system"
   >;
 
   /**
@@ -81,7 +103,15 @@ declare module "@elegant-router/types" {
     | "500"
     | "iframe-page"
     | "login"
+    | "gb_device"
     | "home"
+    | "live_video"
+    | "media_pull-stream"
+    | "media_push-stream"
+    | "node_zlm"
+    | "onvif_device"
+    | "record_video"
+    | "system_user"
   >;
 
   /**
@@ -153,7 +183,7 @@ declare module "@elegant-router/types" {
         component: `view.${K}`;
       }
     : never;
-  
+
   /**
    * the center level route
    */
@@ -176,7 +206,7 @@ declare module "@elegant-router/types" {
         children: (CenterLevelRoute<GetChildRouteKey<K>> | LastLevelRoute<GetChildRouteKey<K>>)[];
       }
     : never;
-  
+
   /**
    * the custom first level route
    */

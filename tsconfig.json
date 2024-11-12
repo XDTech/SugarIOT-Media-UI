@@ -13,13 +13,13 @@
     },
     "resolveJsonModule": true,
     "types": ["vite/client", "node", "unplugin-icons/types/vue", "naive-ui/volar"],
-    "strict": true,
-    "strictNullChecks": true,
-    "noUnusedLocals": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true
+    "strict": false,
+    "strictBindCallApply": false,
+    "strictFunctionTypes": false,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
   "exclude": ["node_modules", "dist"]

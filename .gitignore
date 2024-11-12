@@ -34,3 +34,4 @@ pnpm-lock.json
 yarn.lock
 
 .VSCodeCounter
+pnpm-lock.yaml
