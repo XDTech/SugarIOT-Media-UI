@@ -38,7 +38,26 @@ export const generatedRoutes: GeneratedRoute[] = [
       hideInMenu: true
     }
   },
-
+  {
+    name: 'gb',
+    path: '/gb',
+    component: 'layout.base',
+    meta: {
+      title: '国标管理',
+      icon: 'icon-park:devices',
+    },
+    children: [
+      {
+        name: 'gb_device',
+        path: '/gb/device',
+        component: 'view.gb_device',
+        meta: {
+          title: '国标管理',
+          icon: 'icon-park:surveillance-cameras',
+        }
+      }
+    ]
+  },
   {
     name: 'home',
     path: '/home',
@@ -46,7 +65,6 @@ export const generatedRoutes: GeneratedRoute[] = [
     meta: {
       title: '首页',
       icon: 'icon-park:home-two',
-      i18nKey: 'route.home'
     }
   },
   {
@@ -56,13 +74,31 @@ export const generatedRoutes: GeneratedRoute[] = [
     props: true,
     meta: {
       title: 'iframe-page',
-      i18nKey: 'route.iframe-page',
       constant: true,
       hideInMenu: true,
       keepAlive: true
     }
   },
-
+  {
+    name: 'live',
+    path: '/live',
+    component: 'layout.base',
+    meta: {
+      title: '视频广场',
+      icon: 'icon-park:video-conference',
+    },
+    children: [
+      {
+        name: 'live_video',
+        path: '/live/video',
+        component: 'view.live_video',
+        meta: {
+          title: '分屏管理',
+          icon: 'icon-park:data-screen',
+        }
+      }
+    ]
+  },
   {
     name: 'login',
     path: '/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?',
@@ -105,27 +141,6 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
-    name: 'gb',
-    path: '/gb',
-    component: 'layout.base',
-    meta: {
-      title: '国标管理',
-      icon:`icon-park:devices`
-
-    },
-    children: [
-      {
-        name: 'gb_device',
-        path: '/gb/device',
-        component: 'view.gb_device',
-        meta: {
-          title: '国标管理',
-          icon:`icon-park:surveillance-cameras`
-        }
-      }
-    ]
-  },
-  {
     name: 'node',
     path: '/node',
     component: 'layout.base',
@@ -146,26 +161,6 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
-    name: 'live',
-    path: '/live',
-    component: 'layout.base',
-    meta: {
-      title: '视频广场',
-      icon:'icon-park:video-conference'
-    },
-    children: [
-      {
-        name: 'live_video',
-        path: '/live/video',
-        component: 'view.live_video',
-        meta: {
-          title: '分屏管理',
-          icon:'icon-park:data-screen'
-        }
-      }
-    ]
-  },
-  {
     name: 'onvif',
     path: '/onvif',
     component: 'layout.base',
@@ -180,7 +175,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.onvif_device',
         meta: {
           title: 'ONVIF设备',
-          icon:'icon-park:data-server'
+          icon: 'icon-park:network-tree',
         }
       }
     ]
@@ -191,7 +186,7 @@ export const generatedRoutes: GeneratedRoute[] = [
     component: 'layout.base',
     meta: {
       title: '录像回放',
-      icon:'icon-park:record-player'
+      icon: 'icon-park:record-player',
     },
     children: [
       {
@@ -200,7 +195,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.record_video',
         meta: {
           title: '录像回放',
-          icon:`icon-park:videocamera-one`
+          icon: 'icon-park:videocamera-one',
         }
       }
     ]
@@ -211,7 +206,7 @@ export const generatedRoutes: GeneratedRoute[] = [
     component: 'layout.base',
     meta: {
       title: '系统设置',
-      icon:`icon-park:system`
+      icon: 'icon-park:system',
     },
     children: [
       {
@@ -220,7 +215,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.system_user',
         meta: {
           title: '用户管理',
-          icon:`icon-park:user`
+          icon: 'icon-park:user',
         }
       }
     ]

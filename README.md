@@ -17,3 +17,4 @@ pnpm run dev
 1. [Naive UI](https://www.naiveui.com/zh-CN/light/docs/introduction)
 2. [Soybean Admin](https://docs.soybeanjs.cn/zh/guide/intro.html)
 3. [ICON](https://icones.js.org/)
+4. [VUE3](https://cn.vuejs.org/guide/quick-start.html)
