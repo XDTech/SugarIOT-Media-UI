@@ -20,17 +20,16 @@ interface FormModel {
 }
 
 const model: FormModel = reactive({
-  userName: 'Soybean',
-  password: '123456'
+  userName: 'root',
+  password: 'root'
 });
 
-const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
+const rules = computed<Record<keyof FormModel, App.Global.FormRule[] | any>>(() => {
   // inside computed to make locale reactive, if not apply i18n, you can define it without computed
-  const { formRules } = useFormRules();
-
+  const { formRules, defaultRequiredRule } = useFormRules();
   return {
     userName: formRules.userName,
-    password: formRules.pwd
+    password: defaultRequiredRule
   };
 });
 

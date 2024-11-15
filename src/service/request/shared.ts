@@ -5,11 +5,17 @@ import type { RequestInstanceState } from './type';
 
 export function getAuthorization() {
   const token = localStg.get('token');
-  const Authorization = token ? `Bearer ${token}` : null;
+  const Authorization = token ? `${token}` : null;
 
   return Authorization;
 }
 
+export function getTokenName(): string {
+  const token = localStg.get('tokenName');
+  const name = token ? `${token}` : null;
+
+  return name;
+}
 /** refresh token */
 async function handleRefreshToken() {
   const { resetStore } = useAuthStore();

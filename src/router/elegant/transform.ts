@@ -183,7 +183,7 @@ const routeMap: RouteMap = {
   "record": "/record",
   "record_video": "/record/video",
   "system": "/system",
-  "system_user": "/system/user",
+  "system_user": "/system/user"
 };
 
 /**

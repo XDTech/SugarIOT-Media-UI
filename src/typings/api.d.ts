@@ -57,11 +57,22 @@ declare namespace Api {
     interface LoginToken {
       token: string;
       refreshToken: string;
+      tokenName: string;
+      tokenValue: string;
+      isLogin: boolean;
+      loginId: string;
+      loginType: string;
+      tokenTimeout: number;
+      sessionTimeout: number;
+      tokenSessionTimeout: number;
+      tokenActiveTimeout: number;
+      loginDevice: string;
+      tag: null | string; // 因为原数据中tag为null，这里可以表示为可为空的字符串类型
     }
 
     interface UserInfo {
-      userId: string;
-      userName: string;
+      username: string;
+      id: string;
       roles: string[];
       buttons: string[];
     }

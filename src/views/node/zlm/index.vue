@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useBoolean } from '~/packages/hooks/src';
+import type { OperateType } from '../component/zlm-add-edit.vue';
 import ZlmAddEdit from '../component/zlm-add-edit.vue';
 
 const { bool: visible, setTrue: openModal } = useBoolean();
@@ -7,6 +9,10 @@ function add() {
   console.log(visible.value);
   openModal();
 }
+
+const operator = ref<OperateType>('add');
+
+const title = ref('新增节点1');
 </script>
 
 <template>
@@ -49,7 +55,7 @@ function add() {
       </NCard>
     </div>
 
-    <ZlmAddEdit v-model:visible="visible"></ZlmAddEdit>
+    <ZlmAddEdit v-model:visible="visible" :operate-type="operator" :title="title"></ZlmAddEdit>
   </div>
 </template>
 
