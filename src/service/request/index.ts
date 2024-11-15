@@ -86,7 +86,10 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
         const success = await handleExpiredRequest(request.state);
         if (success) {
           const Authorization = getAuthorization();
-          Object.assign(response.config.headers, { Authorization });
+          const tokenName = getTokenName();
+          const a = {};
+          a[tokenName] = Authorization;
+          Object.assign(response.config.headers, a);
 
           return instance.request(response.config) as Promise<AxiosResponse>;
         }
