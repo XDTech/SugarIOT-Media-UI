@@ -31,6 +31,11 @@ const footerRef = useTemplateRef<HTMLDivElement>('footerRef');
 
 const contentStyle = computed(() => {
   if (autoContentHeight) {
+    console.warn(
+      shouldAutoHeight.value
+        ? `calc(var(--vben-content-height) - ${headerHeight.value}px - ${footerHeight.value}px)`
+        : '0',
+    );
     return {
       height: shouldAutoHeight.value
         ? `calc(var(--vben-content-height) - ${headerHeight.value}px - ${footerHeight.value}px)`

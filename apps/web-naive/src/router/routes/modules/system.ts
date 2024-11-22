@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
           icon: 'icon-park:user',
           title: '用户管理',
         },
-        path: '/gb/device',
+        path: '/system/user',
         component: () => import('#/views/node/zlm/index.vue'),
       },
     ],
