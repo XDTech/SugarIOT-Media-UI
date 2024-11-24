@@ -22,3 +22,4 @@ pnpm run dev
 2. [Vben Admin](https://doc.vben.pro/guide/introduction/vben.html)
 3. [ICON](https://icones.js.org/)
 4. [VUE3](https://cn.vuejs.org/guide/quick-start.html)
+5. [Zod](https://zod.dev/?id=numbers)

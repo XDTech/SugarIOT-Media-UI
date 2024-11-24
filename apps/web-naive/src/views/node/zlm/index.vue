@@ -1,10 +1,12 @@
+<!-- eslint-disable no-unused-vars -->
+<!-- eslint-disable unused-imports/no-unused-vars -->
 <script lang="ts" setup>
 import type { DropdownMixedOption } from 'naive-ui/es/dropdown/src/interface';
 
 import { h, nextTick, ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import {
   antdDelete,
   antdEdit,
@@ -23,11 +25,28 @@ import {
   NGridItem,
   NSpin,
   NTag,
+  NText,
   useMessage,
 } from 'naive-ui';
 
 import { dialog } from '#/adapter/naive';
 import { deleteNodeItem, fetchNodeList, syncConfig } from '#/api';
+
+import zlmFormModal from '../components/zlm-form-modal.vue';
+
+const [zlmModal, zlmModalAPI] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: zlmFormModal,
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+      const d = zlmModalAPI.getData();
+      if (d.refresh) {
+        getList();
+      }
+    }
+  },
+});
 
 const message = useMessage();
 
@@ -41,9 +60,11 @@ const operator = ref('add');
 
 const types = ref('zlm');
 function add() {
-  console.warn(visible.value);
   operator.value = 'add';
-  openModal();
+  title.value = '新增节点';
+  zlmModalAPI.setState({ title: title.value });
+  zlmModalAPI.setData({ operator: operator.value });
+  zlmModalAPI.open();
 }
 
 // get list
@@ -85,13 +106,12 @@ function onClickoutside() {
 }
 function handleSelect(key: number | string, option: any) {
   showDropdownRef.value = false;
-  console.warn(key, option);
 }
 
 function createOption(): DropdownMixedOption[] {
   return [
     {
-      label: '配置服务',
+      label: '高级配置',
       key: 'config',
       props: {
         id: currentId.value,
@@ -130,7 +150,12 @@ function createOption(): DropdownMixedOption[] {
         onClick: () => {
           operator.value = 'edit';
           title.value = '编辑节点';
-          openModal();
+          zlmModalAPI.setState({ title: title.value });
+          zlmModalAPI.setData({
+            operator: operator.value,
+            id: currentId.value,
+          });
+          zlmModalAPI.open();
         },
       },
       icon: () => h(antdEdit),
@@ -148,17 +173,11 @@ function createOption(): DropdownMixedOption[] {
             onPositiveClick: async () => {
               d.loading = true;
               try {
-                const { data, error, response } = await deleteNodeItem(
-                  currentId.value,
-                );
+                await deleteNodeItem(currentId.value);
 
-                if (error) {
-                  message.error(response.data.msg);
-                  return;
-                }
-                message.success(data.msg);
+                message.success('删除成功');
                 getList();
-              } catch {
+              } finally {
                 d.loading = false;
               }
             },
@@ -204,6 +223,7 @@ function createOption(): DropdownMixedOption[] {
           <NGridItem v-for="item in nodeList" :key="item.id">
             <NCard
               :title="item.name"
+              style="width: 300px"
               @contextmenu="
                 (event: MouseEvent) => handleContextMenu(event, item.id)
               "
@@ -223,10 +243,33 @@ function createOption(): DropdownMixedOption[] {
                 <img class="c-img" src="/static/zlm.png" />
               </template>
               <div>
+                <NText depth="3" style="font-size: 12px" tag="div">
+                  心跳检测同步时间：{{
+                    item.syncHeartbeatTime
+                      ? new Date(item.syncHeartbeatTime).toLocaleString()
+                      : '无法同步，请检查配置'
+                  }}
+                </NText>
+                <NText depth="3" style="font-size: 12px" tag="div">
+                  配置文件同步时间：{{
+                    item.syncConfigTime
+                      ? new Date(item.syncConfigTime).toLocaleString()
+                      : '无法同步，请检查配置'
+                  }}
+                </NText>
+              </div>
+
+              <template #footer>
                 <NTag class="c-tag" size="small" type="info">
                   {{ item.ip }}
                 </NTag>
-              </div>
+                <NTag class="c-tag" size="small" type="success">
+                  {{ item.httpPort }}
+                </NTag>
+                <NTag class="c-tag" size="small" type="warning">
+                  {{ item.httpsPort }}
+                </NTag>
+              </template>
             </NCard>
           </NGridItem>
         </NGrid>
@@ -243,6 +286,8 @@ function createOption(): DropdownMixedOption[] {
       trigger="manual"
       @select="handleSelect"
     />
+
+    <zlmModal />
   </Page>
 </template>
 

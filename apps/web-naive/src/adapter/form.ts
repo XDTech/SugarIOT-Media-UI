@@ -34,6 +34,15 @@ setupVbenForm<ComponentType>({
       }
       return true;
     },
+    numberRequired: (value, _params, ctx) => {
+      if (value === undefined || value === null) {
+        return $t('ui.formRules.required', [ctx.label]);
+      }
+      const positiveIntegerRegex = /^[1-9]\d*$/;
+      const f = positiveIntegerRegex.test(value);
+      if (!f) return `${ctx.label}请输入正确的数字`;
+      return true;
+    },
   },
 });
 
