@@ -45,6 +45,8 @@
     "pinia": "catalog:",
     "vue": "catalog:",
     "vue-hooks-plus": "^2.2.1",
+    "vue-json-pretty": "^2.4.0",
+    "vue-json-viewer": "3",
     "vue-router": "catalog:"
   }
 }

@@ -1,37 +1,31 @@
 import { requestClient } from '#/api/request';
 
 export async function fetchCreateNode(form: any) {
-  return requestClient.post('/node', form);
+  return requestClient.post('/node/zlm', form);
 }
 
 export async function fetchUpdateNode(form: any) {
-  return requestClient.put('/node', form);
+  return requestClient.put('/node/zlm', form);
 }
 
 export async function fetchNodeItem(id: string) {
-  return requestClient.get(`/node/${id}`);
+  return requestClient.get(`/node/zlm/${id}`);
+}
+
+export async function fetchNodeItemConfig(id: string) {
+  return requestClient.get(`/node/remote/zlm/${id}`);
 }
 
 export async function deleteNodeItem(id: string) {
-  return requestClient.delete(`/node/${id}`);
+  return requestClient.delete(`/node/zlm/${id}`);
 }
 
 export async function syncConfig(id: string) {
-  return requestClient.put(`/node/sync/${id}`);
+  return requestClient.put(`/node/zlm/sync/${id}`);
 }
 
-export async function fetchNodeList(type: string = '') {
-  const arr: any[] = [];
+export async function fetchNodeList() {
+  const data = await requestClient.get(`/node/zlm/list`);
 
-  const data = await requestClient.get(`/node/list`);
-
-  if (data) {
-    data.forEach((item: any) => {
-      if (item.types === type) {
-        arr.push(item);
-      }
-    });
-  }
-
-  return arr;
+  return data;
 }

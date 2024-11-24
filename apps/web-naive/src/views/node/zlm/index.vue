@@ -13,6 +13,7 @@ import {
   antdSync,
   MdiPlus,
   MdiRefresh,
+  MdiServer,
 } from '@vben/icons';
 
 import {
@@ -26,13 +27,16 @@ import {
   NSpin,
   NTag,
   NText,
+  NTooltip,
   useMessage,
 } from 'naive-ui';
 
 import { dialog } from '#/adapter/naive';
-import { deleteNodeItem, fetchNodeList, syncConfig } from '#/api';
+import { deleteNodeItem, fetchNodeList } from '#/api';
 
+import ZlmConfigModal from '../components/zlm-config-modal.vue';
 import zlmFormModal from '../components/zlm-form-modal.vue';
+import ZlmRemoteModal from '../components/zlm-remote-modal.vue';
 
 const [zlmModal, zlmModalAPI] = useVbenModal({
   // 连接抽离的组件
@@ -48,6 +52,18 @@ const [zlmModal, zlmModalAPI] = useVbenModal({
   },
 });
 
+const [configModal, configModalAPI] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ZlmConfigModal,
+  onOpenChange: (open) => {},
+});
+
+// 远程组件
+const [remoteModal, remoteModalAPI] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ZlmRemoteModal,
+  onOpenChange: (open) => {},
+});
 const message = useMessage();
 
 const [visible, { setTrue: openModal }] = useBoolean();
@@ -58,7 +74,6 @@ const [loadingFlag, { setTrue: openLoading, setFalse: closeLoading }] =
 const title = ref('新增节点');
 const operator = ref('add');
 
-const types = ref('zlm');
 function add() {
   operator.value = 'add';
   title.value = '新增节点';
@@ -73,7 +88,7 @@ const nodeList = ref<any[]>([]);
 
 async function getList() {
   openLoading();
-  const data = await fetchNodeList(types.value);
+  const data = await fetchNodeList();
 
   nodeList.value = data;
 
@@ -116,40 +131,55 @@ function createOption(): DropdownMixedOption[] {
       props: {
         id: currentId.value,
         onClick: async () => {
-          const d = dialog.warning({
-            title: '是否同步配置？',
-            content: '自动同步当前配置到远程流媒体服务器',
-            positiveText: '确认',
-            onPositiveClick: async () => {
-              d.loading = true;
-              try {
-                const { data, error, response } = await syncConfig(
-                  currentId.value,
-                );
+          configModalAPI.open();
+          // const d = dialog.warning({
+          //   title: '是否同步配置？',
+          //   content: '自动同步当前配置到远程流媒体服务器',
+          //   positiveText: '确认',
+          //   onPositiveClick: async () => {
+          //     d.loading = true;
+          //     try {
+          //       const { data, error, response } = await syncConfig(
+          //         currentId.value,
+          //       );
 
-                if (error) {
-                  message.error(response.data.msg);
-                  return;
-                }
-                message.success(data.msg);
-                getList();
-              } catch {
-                d.loading = false;
-              }
-            },
-          });
+          //       if (error) {
+          //         message.error(response.data.msg);
+          //         return;
+          //       }
+          //       message.success(data.msg);
+          //       getList();
+          //     } catch {
+          //       d.loading = false;
+          //     }
+          //   },
+          // });
         },
       },
       icon: () => h(antdSync),
     },
     {
-      label: '编辑',
+      label: '远程配置',
+      key: 'remote',
+      props: {
+        id: currentId.value,
+        onClick: () => {
+          remoteModalAPI.setData({
+            id: currentId.value,
+          });
+          remoteModalAPI.open();
+        },
+      },
+      icon: () => h(MdiServer),
+    },
+    {
+      label: '基本配置',
       key: 'edit',
       props: {
         id: currentId.value,
         onClick: () => {
           operator.value = 'edit';
-          title.value = '编辑节点';
+          title.value = '编辑配置';
           zlmModalAPI.setState({ title: title.value });
           zlmModalAPI.setData({
             operator: operator.value,
@@ -188,6 +218,7 @@ function createOption(): DropdownMixedOption[] {
     },
   ];
 }
+// 远程配置modal
 </script>
 
 <template>
@@ -243,32 +274,71 @@ function createOption(): DropdownMixedOption[] {
                 <img class="c-img" src="/static/zlm.png" />
               </template>
               <div>
-                <NText depth="3" style="font-size: 12px" tag="div">
-                  心跳检测同步时间：{{
-                    item.syncHeartbeatTime
-                      ? new Date(item.syncHeartbeatTime).toLocaleString()
-                      : '无法同步，请检查配置'
-                  }}
-                </NText>
-                <NText depth="3" style="font-size: 12px" tag="div">
-                  配置文件同步时间：{{
-                    item.syncConfigTime
-                      ? new Date(item.syncConfigTime).toLocaleString()
-                      : '无法同步，请检查配置'
-                  }}
-                </NText>
+                <NTooltip>
+                  <template #trigger>
+                    <NText depth="3" style="font-size: 12px" tag="div">
+                      心跳检测同步时间：{{
+                        item.syncHeartbeatTime
+                          ? new Date(item.syncHeartbeatTime).toLocaleString()
+                          : '无法同步，请检查配置'
+                      }}
+                    </NText>
+                  </template>
+                  用于监听ZLM实例在线状态，当前每10s同步一次
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NText depth="3" style="font-size: 12px" tag="div">
+                      配置文件同步时间：{{
+                        item.syncConfigTime
+                          ? new Date(item.syncConfigTime).toLocaleString()
+                          : '无法同步，请检查配置'
+                      }}
+                    </NText>
+                  </template>
+                  将数据库配置同步到ZLM实例的时间
+                </NTooltip>
               </div>
 
               <template #footer>
-                <NTag class="c-tag" size="small" type="info">
-                  {{ item.ip }}
-                </NTag>
-                <NTag class="c-tag" size="small" type="success">
-                  {{ item.httpPort }}
-                </NTag>
-                <NTag class="c-tag" size="small" type="warning">
-                  {{ item.httpsPort }}
-                </NTag>
+                <NTooltip trigger="hover">
+                  <template #trigger>
+                    <NTag class="c-tag" size="small" type="info">
+                      <template #icon>
+                        <span class="icon-[mdi--ip-outline]"></span>
+                      </template>
+                      {{ item.ip }}
+                    </NTag>
+                  </template>
+                  ZLM所在服务器IP
+                </NTooltip>
+
+                <NTooltip trigger="hover">
+                  <template #trigger>
+                    <NTag class="c-tag" size="small" type="success">
+                      <template #icon>
+                        <span
+                          class="icon-[mdi--file-powerpoint-box-outline]"
+                        ></span>
+                      </template>
+                      {{ item.httpPort }}
+                    </NTag>
+                  </template>
+                  ZLM服务的http端口
+                </NTooltip>
+                <NTooltip trigger="hover">
+                  <template #trigger>
+                    <NTag class="c-tag" size="small" type="warning">
+                      <template #icon>
+                        <span
+                          class="icon-[mdi--file-powerpoint-box-outline]"
+                        ></span>
+                      </template>
+                      {{ item.httpsPort }}
+                    </NTag>
+                  </template>
+                  ZLM服务的https端口
+                </NTooltip>
               </template>
             </NCard>
           </NGridItem>
@@ -288,6 +358,8 @@ function createOption(): DropdownMixedOption[] {
     />
 
     <zlmModal />
+    <configModal />
+    <remoteModal />
   </Page>
 </template>
 
