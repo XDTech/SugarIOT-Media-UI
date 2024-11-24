@@ -13,7 +13,7 @@ export async function fetchNodeItem(id: string) {
 }
 
 export async function fetchNodeItemConfig(id: string) {
-  return requestClient.get(`/node/remote/zlm/${id}`);
+  return requestClient.get(`/node/zlm/remote/${id}`);
 }
 
 export async function deleteNodeItem(id: string) {

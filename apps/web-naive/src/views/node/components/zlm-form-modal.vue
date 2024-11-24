@@ -32,15 +32,7 @@ const [Form, formApi] = useVbenForm({
         triggerFields: ['none'],
       },
     },
-    {
-      component: 'Input',
-      fieldName: 'types',
-      label: 'types',
-      dependencies: {
-        show: false,
-        triggerFields: ['none'],
-      },
-    },
+
     {
       component: 'Input',
       fieldName: 'name',
@@ -107,7 +99,7 @@ const [Modal, modalApi] = useVbenModal({
         f = await fetchNodeItem(d.id);
       }
 
-      await formApi.setValues({ types: 'zlm', ...f });
+      await formApi.setValues({ ...f });
     }
   },
 });
