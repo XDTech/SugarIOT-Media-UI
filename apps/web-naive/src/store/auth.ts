@@ -4,7 +4,12 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
-import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
+import {
+  resetAllStores,
+  useAccessStore,
+  useUserStore,
+  useWebSocketStore,
+} from '@vben/stores';
 
 import { defineStore } from 'pinia';
 
@@ -32,12 +37,13 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { tokenValue: accessToken } = await loginApi(params);
+      const { tokenValue: accessToken, tokenName } = await loginApi(params);
 
       // 如果成功获取到 accessToken
       if (accessToken) {
         // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
+        accessStore.setAccessTokenName(tokenName);
 
         // 获取用户信息并存储到 accessStore 中
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
@@ -53,6 +59,9 @@ export const useAuthStore = defineStore('auth', () => {
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
         } else {
+          // TODO:登陆成功链接ws
+          const ws = useWebSocketStore();
+          ws.initwebsocket(accessToken);
           onSuccess
             ? await onSuccess?.()
             : await router.push(userInfo.homePath || DEFAULT_HOME_PATH);

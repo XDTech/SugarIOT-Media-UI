@@ -22,9 +22,11 @@
   "dependencies": {
     "@vben-core/shared": "workspace:*",
     "@vben-core/typings": "workspace:*",
+    "@vueuse/core": "^11.3.0",
     "pinia": "catalog:",
     "pinia-plugin-persistedstate": "catalog:",
     "vue": "catalog:",
+    "vue-hooks-plus": "^2.2.1",
     "vue-router": "catalog:"
   }
 }

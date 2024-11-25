@@ -218,7 +218,6 @@ function createOption(): DropdownMixedOption[] {
     },
   ];
 }
-// 远程配置modal
 </script>
 
 <template>
@@ -284,7 +283,7 @@ function createOption(): DropdownMixedOption[] {
                       }}
                     </NText>
                   </template>
-                  用于监听ZLM实例在线状态，当前每10s同步一次
+                  监听ZLM实例保活上报，当前每{{ item.timeoutSec }}s同步一次
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>

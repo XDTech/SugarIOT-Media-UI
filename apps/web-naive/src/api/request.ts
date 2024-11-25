@@ -61,8 +61,8 @@ function createRequestClient(baseURL: string) {
   client.addRequestInterceptor({
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
-
-      config.headers.Authorization = formatToken(accessStore.accessToken);
+      config.headers[accessStore.accessTokenName || 'token'] =
+        accessStore.accessToken;
       config.headers['Accept-Language'] = preferences.app.locale;
       return config;
     },

@@ -4,6 +4,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type AccessToken = null | string;
+type AccessTokenName = string;
 
 interface AccessState {
   /**
@@ -22,6 +23,11 @@ interface AccessState {
    * 登录 accessToken
    */
   accessToken: AccessToken;
+
+  /**
+   * 登录 accessToken name
+   */
+  accessTokenName: AccessTokenName;
   /**
    * 是否已经检查过权限
    */
@@ -53,6 +59,9 @@ export const useAccessStore = defineStore('core-access', {
     setAccessToken(token: AccessToken) {
       this.accessToken = token;
     },
+    setAccessTokenName(name: AccessTokenName) {
+      this.accessTokenName = name;
+    },
     setIsAccessChecked(isAccessChecked: boolean) {
       this.isAccessChecked = isAccessChecked;
     },
@@ -72,6 +81,7 @@ export const useAccessStore = defineStore('core-access', {
     accessMenus: [],
     accessRoutes: [],
     accessToken: null,
+    accessTokenName: '',
     isAccessChecked: false,
     loginExpired: false,
     refreshToken: null,

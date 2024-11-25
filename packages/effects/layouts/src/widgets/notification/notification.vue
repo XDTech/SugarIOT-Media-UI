@@ -1,6 +1,10 @@
+<!-- eslint-disable no-use-before-define -->
+<!-- eslint-disable perfectionist/sort-imports -->
+<!-- eslint-disable unused-imports/no-unused-vars -->
+<!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
 import type { NotificationItem } from './types';
-
+import { useAccessStore } from '@vben/stores';
 import { Bell, MailCheck } from '@vben/icons';
 import { $t } from '@vben/locales';
 import {
@@ -11,17 +15,6 @@ import {
 } from '@vben-core/shadcn-ui';
 
 import { useToggle } from '@vueuse/core';
-
-interface Props {
-  /**
-   * 显示圆点
-   */
-  dot?: boolean;
-  /**
-   * 消息列表
-   */
-  notifications?: NotificationItem[];
-}
 
 defineOptions({ name: 'NotificationPopup' });
 
@@ -36,6 +29,19 @@ const emit = defineEmits<{
   read: [NotificationItem];
   viewAll: [];
 }>();
+
+const accessStore = useAccessStore();
+
+interface Props {
+  /**
+   * 显示圆点
+   */
+  dot?: boolean;
+  /**
+   * 消息列表
+   */
+  notifications?: NotificationItem[];
+}
 
 const [open, toggle] = useToggle();
 

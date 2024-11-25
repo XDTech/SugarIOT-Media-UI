@@ -38,6 +38,7 @@
     "@vben/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "vue": "catalog:",
+    "vue-hooks-plus": "^2.2.1",
     "vue-router": "catalog:"
   }
 }
