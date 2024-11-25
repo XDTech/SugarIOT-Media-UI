@@ -17,7 +17,6 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore, useWebSocketStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
-import { notification } from '#/adapter/naive';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -127,11 +126,7 @@ watch(
 const { latestMessage } = useWebSocketStore();
 
 watch(latestMessage, (msg) => {
-  notification.success({
-    content: msg,
-    description: msg,
-    duration: 3000,
-  });
+  console.warn(msg);
 });
 </script>
 
