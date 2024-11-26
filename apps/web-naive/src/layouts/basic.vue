@@ -17,9 +17,12 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
+import { notification } from '#/adapter/naive';
 import { $t } from '#/locales';
 import { useAuthStore, useWebSocketStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
+
+import { type SocketMsgBean, SocketMsgEnum } from '../model/index';
 
 const notifications = ref<NotificationItem[]>([
   {
@@ -121,12 +124,40 @@ watch(
     immediate: true,
   },
 );
+
+function procressSocketMsg(data: SocketMsgBean) {
+  switch (data.types) {
+    case SocketMsgEnum.mediaOffline: {
+      notification.error({
+        content: '服务离线',
+        description: `【${data.msg}】实例已离线，请检查配置`,
+        duration: 3000,
+      });
+      break;
+    }
+
+    case SocketMsgEnum.mediaOnline: {
+      notification.success({
+        content: '服务上线',
+        description: `【${data.msg}】实例已上线`,
+        duration: 3000,
+      });
+      break;
+    }
+  }
+}
 // ws 客户端
 
 const { latestMessage } = useWebSocketStore();
 
 watch(latestMessage, (msg: MessageEvent) => {
-  console.warn(msg);
+  const info = msg.data;
+
+  if (info) {
+    const data: SocketMsgBean = JSON.parse(info);
+
+    procressSocketMsg(data);
+  }
 });
 </script>
 
