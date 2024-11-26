@@ -28,4 +28,4 @@ pnpm run dev
 #### 参考设计
 
 1. ZLM同步配置设计
-![这是一张美丽的风景图](./zlm_config.png)
+![config](./zlm_config.png)
