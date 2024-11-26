@@ -14,6 +14,7 @@ import {
   MdiMonitorEye,
   MdiPlus,
   MdiRefresh,
+  MdiRestart,
   MdiWebSync,
 } from '@vben/icons';
 
@@ -33,7 +34,7 @@ import {
 } from 'naive-ui';
 
 import { dialog } from '#/adapter/naive';
-import { deleteNodeItem, fetchNodeList, syncConfig } from '#/api';
+import { deleteNodeItem, fetchNodeList, fetchRestart, syncConfig } from '#/api';
 
 import ZlmConfigModal from '../components/zlm-config-modal.vue';
 import zlmFormModal from '../components/zlm-form-modal.vue';
@@ -162,28 +163,6 @@ function createOption(): DropdownMixedOption[] {
             id: currentId.value,
           });
           configModalAPI.open();
-          // const d = dialog.warning({
-          //   title: '是否同步配置？',
-          //   content: '自动同步当前配置到远程流媒体服务器',
-          //   positiveText: '确认',
-          //   onPositiveClick: async () => {
-          //     d.loading = true;
-          //     try {
-          //       const { data, error, response } = await syncConfig(
-          //         currentId.value,
-          //       );
-
-          //       if (error) {
-          //         message.error(response.data.msg);
-          //         return;
-          //       }
-          //       message.success(data.msg);
-          //       getList();
-          //     } catch {
-          //       d.loading = false;
-          //     }
-          //   },
-          // });
         },
       },
       icon: () => h(antdSync),
@@ -230,6 +209,31 @@ function createOption(): DropdownMixedOption[] {
         },
       },
       icon: () => h(MdiWebSync),
+    },
+    {
+      label: '重启',
+      key: 'restart',
+      props: {
+        id: currentId.value,
+        onClick: async () => {
+          const d = dialog.warning({
+            title: '重启节点',
+            content: '重启服务器,只有Daemon方式才能重启，否则是直接关闭！',
+            positiveText: '确认',
+            onPositiveClick: async () => {
+              d.loading = true;
+              try {
+                await fetchRestart(currentId.value);
+                message.info('服务将在一秒后重启');
+                getList();
+              } finally {
+                d.loading = false;
+              }
+            },
+          });
+        },
+      },
+      icon: () => h(MdiRestart),
     },
     {
       label: '删除',
