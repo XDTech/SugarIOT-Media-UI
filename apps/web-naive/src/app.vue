@@ -5,7 +5,7 @@ import { computed, onMounted } from 'vue';
 
 import { useNaiveDesignTokens } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
-import { useAccessStore, useWebSocketStore } from '@vben/stores';
+import { useAccessStore } from '@vben/stores';
 
 import {
   darkTheme,
@@ -18,6 +18,8 @@ import {
   NNotificationProvider,
   zhCN,
 } from 'naive-ui';
+
+import { useWebSocketStore } from './store';
 
 defineOptions({ name: 'App' });
 

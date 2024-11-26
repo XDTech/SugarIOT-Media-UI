@@ -32,8 +32,8 @@ const [remoteModal, remoteModalAPI] = useVbenModal({
       return;
     }
     const dt = remoteModalAPI.getData();
-    // 获取远程配置
     jsonThemes.value = preferences.theme.mode;
+    // 获取远程配置
 
     try {
       const res = await fetchNodeItemConfig(dt.id);

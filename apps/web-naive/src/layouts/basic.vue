@@ -14,11 +14,11 @@ import {
   UserDropdown,
 } from '@vben/layouts';
 import { preferences } from '@vben/preferences';
-import { useAccessStore, useUserStore, useWebSocketStore } from '@vben/stores';
+import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
 import { $t } from '#/locales';
-import { useAuthStore } from '#/store';
+import { useAuthStore, useWebSocketStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
 const notifications = ref<NotificationItem[]>([
@@ -125,7 +125,7 @@ watch(
 
 const { latestMessage } = useWebSocketStore();
 
-watch(latestMessage, (msg) => {
+watch(latestMessage, (msg: MessageEvent) => {
   console.warn(msg);
 });
 </script>

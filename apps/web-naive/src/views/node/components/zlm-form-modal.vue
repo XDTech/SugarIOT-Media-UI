@@ -71,6 +71,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入http端口',
         min: 1,
+        precision: 0,
       },
       rules: 'required',
     },
@@ -82,6 +83,7 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         placeholder: '请输入https端口',
         min: 1,
+        precision: 0,
       },
       rules: 'required',
     },

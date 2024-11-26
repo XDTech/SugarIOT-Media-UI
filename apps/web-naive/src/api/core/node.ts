@@ -8,6 +8,10 @@ export async function fetchUpdateNode(form: any) {
   return requestClient.put('/node/zlm', form);
 }
 
+export async function fetchAdvanceNode(form: any) {
+  return requestClient.put('/node/zlm/advance', form);
+}
+
 export async function fetchNodeItem(id: string) {
   return requestClient.get(`/node/zlm/${id}`);
 }

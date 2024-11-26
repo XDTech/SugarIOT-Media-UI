@@ -11,9 +11,10 @@ import {
   antdDelete,
   antdEdit,
   antdSync,
+  MdiMonitorEye,
   MdiPlus,
   MdiRefresh,
-  MdiServer,
+  MdiWebSync,
 } from '@vben/icons';
 
 import {
@@ -32,7 +33,7 @@ import {
 } from 'naive-ui';
 
 import { dialog } from '#/adapter/naive';
-import { deleteNodeItem, fetchNodeList } from '#/api';
+import { deleteNodeItem, fetchNodeList, syncConfig } from '#/api';
 
 import ZlmConfigModal from '../components/zlm-config-modal.vue';
 import zlmFormModal from '../components/zlm-form-modal.vue';
@@ -55,7 +56,15 @@ const [zlmModal, zlmModalAPI] = useVbenModal({
 const [configModal, configModalAPI] = useVbenModal({
   // 连接抽离的组件
   connectedComponent: ZlmConfigModal,
-  onOpenChange: (open) => {},
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+      const d = configModalAPI.getData();
+      if (d.refresh) {
+        getList();
+      }
+    }
+  },
 });
 
 // 远程组件
@@ -126,11 +135,32 @@ function handleSelect(key: number | string, option: any) {
 function createOption(): DropdownMixedOption[] {
   return [
     {
+      label: '基本配置',
+      key: 'edit',
+      props: {
+        id: currentId.value,
+        onClick: () => {
+          operator.value = 'edit';
+          title.value = '编辑配置';
+          zlmModalAPI.setState({ title: title.value });
+          zlmModalAPI.setData({
+            operator: operator.value,
+            id: currentId.value,
+          });
+          zlmModalAPI.open();
+        },
+      },
+      icon: () => h(antdEdit),
+    },
+    {
       label: '高级配置',
       key: 'config',
       props: {
         id: currentId.value,
         onClick: async () => {
+          configModalAPI.setData({
+            id: currentId.value,
+          });
           configModalAPI.open();
           // const d = dialog.warning({
           //   title: '是否同步配置？',
@@ -158,6 +188,7 @@ function createOption(): DropdownMixedOption[] {
       },
       icon: () => h(antdSync),
     },
+
     {
       label: '远程配置',
       key: 'remote',
@@ -170,25 +201,35 @@ function createOption(): DropdownMixedOption[] {
           remoteModalAPI.open();
         },
       },
-      icon: () => h(MdiServer),
+      icon: () => h(MdiMonitorEye),
     },
     {
-      label: '基本配置',
-      key: 'edit',
+      label: '配置同步',
+      key: 'sync',
       props: {
         id: currentId.value,
-        onClick: () => {
-          operator.value = 'edit';
-          title.value = '编辑配置';
-          zlmModalAPI.setState({ title: title.value });
-          zlmModalAPI.setData({
-            operator: operator.value,
-            id: currentId.value,
+        onClick: async () => {
+          const d = dialog.warning({
+            title: '是否进行配置同步？',
+            content: '自动同步当前数据库的配置到远程流媒体服务器',
+            positiveText: '确认',
+            onPositiveClick: async () => {
+              d.loading = true;
+              try {
+                await syncConfig(currentId.value);
+
+                message.success('同步成功');
+                getList();
+              } catch (error: any) {
+                message.error(error.msg);
+              } finally {
+                d.loading = false;
+              }
+            },
           });
-          zlmModalAPI.open();
         },
       },
-      icon: () => h(antdEdit),
+      icon: () => h(MdiWebSync),
     },
     {
       label: '删除',
@@ -246,7 +287,7 @@ function createOption(): DropdownMixedOption[] {
         <NGrid
           :x-gap="12"
           :y-gap="24"
-          cols="1 s:2 l:4"
+          cols="1 s:2 l:4 xxl:5"
           item-responsive
           responsive="screen"
         >
@@ -283,7 +324,7 @@ function createOption(): DropdownMixedOption[] {
                       }}
                     </NText>
                   </template>
-                  监听ZLM实例保活上报，当前每{{ item.timeoutSec }}s同步一次
+                  监听ZLM实例保活上报，当前每{{ item.aliveInterval }}秒同步一次
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>

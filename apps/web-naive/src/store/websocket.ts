@@ -1,8 +1,11 @@
 import { ref } from 'vue';
 import { useWebSocket } from 'vue-hooks-plus';
 
+import { useAppConfig } from '@vben/hooks';
+
 import { defineStore } from 'pinia';
 
+const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 export const useWebSocketStore = defineStore('websocket', () => {
   // 使用 useWebSocket hook
   type ConnectFunction = () => void;
@@ -14,8 +17,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const latestMessage = ref<any>(null);
   const readyState = ref<number | undefined>(undefined);
   const sendMessage = ref<SendMessageFunction | undefined>(undefined);
-
-  const host = 'ws://localhost:8899/websocket/';
+  const host = `${apiURL}/websocket/`;
 
   const isConnected = ref(false); // 添加连接状态标志
 

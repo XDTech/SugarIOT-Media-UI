@@ -4,18 +4,15 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
-import {
-  resetAllStores,
-  useAccessStore,
-  useUserStore,
-  useWebSocketStore,
-} from '@vben/stores';
+import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
 import { defineStore } from 'pinia';
 
 import { notification } from '#/adapter/naive';
 import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
+
+import { useWebSocketStore } from './websocket';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
