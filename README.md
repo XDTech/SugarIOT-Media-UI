@@ -23,3 +23,9 @@ pnpm run dev
 3. [ICON](https://icones.js.org/)
 4. [VUE3](https://cn.vuejs.org/guide/quick-start.html)
 5. [Zod](https://zod.dev/?id=numbers)
+
+
+#### 参考设计
+
+1. ZLM同步配置设计
+![这是一张美丽的风景图](./zlm_config.png)
