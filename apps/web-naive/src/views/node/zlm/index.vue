@@ -190,7 +190,8 @@ function createOption(): DropdownMixedOption[] {
         onClick: async () => {
           const d = dialog.warning({
             title: '是否进行配置同步？',
-            content: '自动同步当前数据库的配置到远程流媒体服务器',
+            content:
+              '自动同步当前数据库的配置到远程流媒体服务器,数据库配置可前往高级配置中查看。',
             positiveText: '确认',
             onPositiveClick: async () => {
               d.loading = true;
