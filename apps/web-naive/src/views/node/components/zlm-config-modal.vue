@@ -151,6 +151,10 @@ async function submitForm() {
     setFalse();
   }
 }
+
+function closeModal() {
+  configModalAPI.close();
+}
 </script>
 
 <template>
@@ -208,7 +212,7 @@ async function submitForm() {
 
     <template #footer>
       <NSpace :size="16" justify="end">
-        <NButton type="error">
+        <NButton type="error" @click="closeModal">
           <template #icon>
             <span class="icon-[ant-design--close-outlined]"></span>
           </template>

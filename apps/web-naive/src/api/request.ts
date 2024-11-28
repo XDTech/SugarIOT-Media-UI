@@ -71,10 +71,14 @@ function createRequestClient(baseURL: string) {
   // response数据解构
   client.addResponseInterceptor<HttpResponse>({
     fulfilled: (response) => {
+      console.warn(response);
       const { data: responseData, status } = response;
 
       const { code, data } = responseData;
       if (status >= 200 && status < 400 && code === 0) {
+        if (response.config.url?.endsWith('/page/list')) {
+          return responseData;
+        }
         return data;
       }
       throw Object.assign({}, response, { response });

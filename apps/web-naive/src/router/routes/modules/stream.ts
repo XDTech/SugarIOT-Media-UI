@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'pullStream',
         path: '/stream/pull',
-        component: () => import('#/views/node/zlm/index.vue'),
+        component: () => import('#/views/stream/stream-pull.vue'),
       },
       {
         meta: {

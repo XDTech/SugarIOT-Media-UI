@@ -48,5 +48,8 @@
     "vue-json-pretty": "^2.4.0",
     "vue-json-viewer": "3",
     "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "vue-cli-plugin-jessibuca": "^0.0.2"
   }
 }
