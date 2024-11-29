@@ -9,6 +9,7 @@ import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 import { fetchDelPull, fetchPullList } from '#/api';
 
+import PlayerComponent from '../player/index.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
 
 interface RowType {
@@ -161,6 +162,22 @@ async function deleteItem(id: string) {
     loading(false);
   }
 }
+
+// 播放器model
+
+const [playerModal, playerModalAPI] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: PlayerComponent,
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+    }
+  },
+});
+
+function openPlayer() {
+  playerModalAPI.open();
+}
 </script>
 
 <template>
@@ -202,7 +219,7 @@ async function deleteItem(id: string) {
       <template #action="{ row }">
         <NPopover trigger="hover">
           <template #trigger>
-            <NButton circle quaternary type="primary">
+            <NButton circle quaternary type="primary" @click="openPlayer">
               <template #icon>
                 <MsPlay />
               </template>
@@ -231,5 +248,7 @@ async function deleteItem(id: string) {
     </Grid>
 
     <streamModal />
+
+    <playerModal />
   </Page>
 </template>
