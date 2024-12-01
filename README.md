@@ -23,6 +23,7 @@ pnpm run dev
 3. [ICON](https://icones.js.org/)
 4. [VUE3](https://cn.vuejs.org/guide/quick-start.html)
 5. [Zod](https://zod.dev/?id=numbers)
+6. [Easyplayer](https://www.tsingsee.com/easyplayer/)
 
 
 #### 参考设计

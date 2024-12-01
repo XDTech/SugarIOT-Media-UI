@@ -9,7 +9,7 @@ import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 import { fetchDelPull, fetchPullList } from '#/api';
 
-import PlayerComponent from '../player/index.vue';
+import EasyPlayer from '../player/components/easy-player-modal.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
 
 interface RowType {
@@ -42,37 +42,37 @@ const formOptions: VbenFormProps = {
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
-    { title: '名称', width: 200, field: 'name', fixed: 'left' },
+    { title: '名称', width: 300, field: 'name', fixed: 'left' },
     {
       field: 'app',
       title: '应用名',
-      width: 100,
+      width: 300,
       slots: { default: 'app' },
     },
     {
       field: 'stream',
       title: '流地址',
-      width: 100,
+      width: 300,
       slots: { default: 'stream' },
     },
     { field: 'url', title: 'Url地址', width: 300 },
     {
       field: 'timeoutSec',
       title: '超时时间(秒)',
-      width: 150,
+      width: 300,
       titlePrefix: { content: '拉流超时时间' },
     },
     {
       field: 'enableMp4',
       title: 'MP4录制',
-      width: 150,
+      width: 300,
       slots: { default: 'enableMp4' },
     },
     {
       field: 'createdAt',
       title: '创建时间',
       formatter: 'formatDateTime',
-      width: 200,
+      width: 300,
     },
     {
       field: 'action',
@@ -97,6 +97,9 @@ const gridOptions: VxeGridProps<RowType> = {
         try {
           loading(true);
 
+          // if (formValues && formValues.isTrusted) {
+          //   formValues = {};
+          // }
           return await fetchPullList({
             pi: page.currentPage,
             ps: page.pageSize,
@@ -115,7 +118,7 @@ const gridOptions: VxeGridProps<RowType> = {
     custom: true,
     export: true,
     import: false,
-    refresh: true,
+    refresh: false,
     zoom: true,
   },
 };
@@ -167,7 +170,7 @@ async function deleteItem(id: string) {
 
 const [playerModal, playerModalAPI] = useVbenModal({
   // 连接抽离的组件
-  connectedComponent: PlayerComponent,
+  connectedComponent: EasyPlayer,
   onOpenChange: (open) => {
     if (!open) {
       // 接收子组件消息

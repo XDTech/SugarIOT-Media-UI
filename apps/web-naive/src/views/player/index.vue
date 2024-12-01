@@ -1,4 +1,9 @@
+<!-- eslint-disable unused-imports/no-unused-vars -->
+<!-- eslint-disable no-unused-vars -->
+<!-- eslint-disable no-console -->
 <script lang="ts" setup>
+import type Jessibuca from '#/jessibuca';
+
 import { nextTick, onMounted, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
@@ -39,42 +44,41 @@ function initPlayer() {
     // https://live.nodemedia.cn:8443/live/b480_264.flv
     jess = new (window as any).Jessibuca({
       container: '#container',
-      videoBuffer: Number(1), // 缓存时长
-      isResize: false,
-      decoder: '../../public/player/decoder.js',
+      videoBuffer: 0.1, // 缓存时长
+      decoder: '/public/jess/decoder.js',
       text: '加载中',
-      loadingText: '加载中...',
-      wasm: true,
-      vc: 'ff',
-      playing: false,
-      quieting: true,
-      loaded: false, // mute
-      showOperateBtns: false,
-      showBandwidth: true,
-      err: '22',
+      heartTimeout: 5,
+      heartTimeoutReplay: true,
+      heartTimeoutReplayTimes: 3,
+      hiddenAutoPause: false,
+      hotKey: true,
+      isFlv: false,
+      isFullResize: false,
+      isResize: false,
+      keepScreenOn: true,
+      loadingText: '请稍等, 视频加载中......',
+      loadingTimeout: 10,
+      loadingTimeoutReplay: true,
+      loadingTimeoutReplayTimes: 3,
+      openWebglAlignment: false,
       operateBtns: {
-        /** 是否显示全屏按钮 */
         fullscreen: true,
-        /** 是否显示截图按钮 */
         screenshot: true,
-        /** 是否显示播放暂停按钮 */
         play: true,
-        /** 是否显示声音按钮 */
         audio: true,
-        /** 是否显示录制按 */
         record: true,
       },
-      speed: 0,
-      performance: '',
-      volume: 1,
+      recordType: 'mp4',
       rotate: 0,
-      useWCS: true,
-      useMSE: true,
-      useOffscreen: false,
-      recording: false,
-      recordType: 'webm',
-      scale: 0,
-    });
+      showBandwidth: false,
+      supportDblclickFullscreen: false,
+      timeout: 10,
+      useMSE: false,
+      useWCS: false,
+      useWebFullScreen: true,
+      wasmDecodeErrorReplay: true,
+      wcsUseVideoRender: true,
+    }) as Jessibuca;
 
     jess.on('loadingTimeout', () => {
       console.log('timeout');
@@ -93,13 +97,12 @@ function initPlayer() {
     jess.on('kBps', (kBps: any) => {
       console.log('kBps', kBps);
     });
-    jess.toggleControlBar(true);
-    print();
+    play();
   }, 0);
 }
 
-function print() {
-  jess?.play('http://pull-demo.volcfcdnrd.com/live/st-4536521_yzmuhevcd.flv');
+function play() {
+  jess?.play('http://192.168.31.208/live/test.live.flv');
 }
 </script>
 
@@ -116,13 +119,5 @@ function print() {
 #container {
   width: 100%;
   height: 100%;
-  background: rgb(13 14 27 / 70%);
 }
-
-/* @media (max-width: 720px) {
-  #container {
-    width: 90vw;
-    height: 52.7vw;
-  }
-} */
 </style>
