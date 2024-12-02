@@ -1,5 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
 import { antdDelete, antdEdit, MdiPlus, MsPlay } from '@vben/icons';
 
@@ -9,7 +11,7 @@ import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 import { fetchDelPull, fetchPullList } from '#/api';
 
-import EasyPlayer from '../player/components/easy-player-modal.vue';
+import PlayerComponent from '../player/index.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
 
 interface RowType {
@@ -55,7 +57,7 @@ const gridOptions: VxeGridProps<RowType> = {
       width: 300,
       slots: { default: 'stream' },
     },
-    { field: 'url', title: 'Url地址', width: 300 },
+    { field: 'url', title: '拉流地址', width: 300 },
     {
       field: 'timeoutSec',
       title: '超时时间(秒)',
@@ -170,17 +172,20 @@ async function deleteItem(id: string) {
 
 const [playerModal, playerModalAPI] = useVbenModal({
   // 连接抽离的组件
-  connectedComponent: EasyPlayer,
-  onOpenChange: (open) => {
-    if (!open) {
-      // 接收子组件消息
-    }
-  },
+  footer: false,
 });
 
-function openPlayer() {
+// const state = playerModalAPI.useStore();
+const item = ref();
+const title = ref();
+function openPlayer(i: any) {
+  item.value = i;
+  title.value = `【${i.name}】视频预览`;
   playerModalAPI.open();
 }
+// watch(state, (_msg) => {
+//   playerHight.value = state.value.fullscreen ? 600 : 300;
+// });
 </script>
 
 <template>
@@ -222,7 +227,7 @@ function openPlayer() {
       <template #action="{ row }">
         <NPopover trigger="hover">
           <template #trigger>
-            <NButton circle quaternary type="primary" @click="openPlayer">
+            <NButton circle quaternary type="primary" @click="openPlayer(row)">
               <template #icon>
                 <MsPlay />
               </template>
@@ -252,6 +257,8 @@ function openPlayer() {
 
     <streamModal />
 
-    <playerModal />
+    <playerModal :title="title" class="h-[600px] w-[800px]">
+      <PlayerComponent v-model:model-value="item" />
+    </playerModal>
   </Page>
 </template>
