@@ -25,3 +25,6 @@ export const MsPlay = createIconifyIcon('material-symbols:motion-play-outline');
 export const antdSync = createIconifyIcon('ant-design:cloud-sync-outlined');
 export const antdEdit = createIconifyIcon('ant-design:edit-outlined');
 export const antdDelete = createIconifyIcon('ant-design:delete-outlined');
+export const antdDisconnect = createIconifyIcon(
+  'ant-design:disconnect-outlined',
+);

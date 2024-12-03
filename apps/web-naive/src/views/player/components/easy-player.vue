@@ -31,8 +31,6 @@ function playCreate() {
     console.log('playbackSeek', data);
   });
   playerInfo.value = easyplayer;
-
-  play();
 }
 onMounted(() => {
   playCreate();
@@ -46,8 +44,9 @@ async function destory() {
   await playerInfo.value.destroy();
   playerInfo.value = null;
 }
-function play() {
-  playerInfo.value?.play('ws://192.168.31.208/live/test.live.flv');
+function play(url: string) {
+  console.log(url);
+  playerInfo.value?.play(url);
 }
 defineExpose({
   play,
@@ -62,5 +61,6 @@ defineExpose({
 .player-box {
   inset: 0;
   height: 100%;
+  background-color: black;
 }
 </style>

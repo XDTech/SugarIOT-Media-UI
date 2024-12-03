@@ -128,6 +128,7 @@ async function getRemoteConfig() {
         timeoutSec: Number(config['hook.timeoutSec']),
         aliveInterval: Number(config['hook.alive_interval']),
       });
+      message.success('操作成功');
     }
   } finally {
     setFalse();

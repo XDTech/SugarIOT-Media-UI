@@ -3,13 +3,19 @@
 import { ref } from 'vue';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdEdit, MdiPlus, MsPlay } from '@vben/icons';
+import {
+  antdDelete,
+  antdDisconnect,
+  antdEdit,
+  MdiPlus,
+  MsPlay,
+} from '@vben/icons';
 
 import { NButton, NPopconfirm, NPopover, NTag } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { fetchDelPull, fetchPullList } from '#/api';
+import { fetchClosePull, fetchDelPull, fetchPullList } from '#/api';
 
 import PlayerComponent from '../player/index.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
@@ -48,28 +54,59 @@ const gridOptions: VxeGridProps<RowType> = {
     {
       field: 'app',
       title: '应用名',
-      width: 300,
+      width: 200,
       slots: { default: 'app' },
     },
     {
       field: 'stream',
       title: '流地址',
-      width: 300,
+      width: 200,
       slots: { default: 'stream' },
     },
-    { field: 'url', title: '拉流地址', width: 300 },
+    { field: 'url', title: '拉流地址', width: 500 },
     {
       field: 'timeoutSec',
       title: '超时时间(秒)',
-      width: 300,
+      width: 200,
       titlePrefix: { content: '拉流超时时间' },
+    },
+    {
+      field: 'nodeName',
+      title: '播放节点',
+      width: 200,
+      slots: { default: 'nodeName' },
+    },
+    {
+      field: 'enablePull',
+      title: '自动拉流',
+      width: 200,
+      slots: { default: 'enablePull' },
+      titlePrefix: {
+        content: '添加、程序启动后自动拉流',
+      },
     },
     {
       field: 'enableMp4',
       title: 'MP4录制',
-      width: 300,
+      width: 200,
       slots: { default: 'enableMp4' },
     },
+    {
+      field: 'autoClose',
+      title: '无人观看',
+      width: 200,
+      slots: { default: 'autoClose' },
+      titlePrefix: {
+        content: '无人观看是否自动关闭流(不触发无人观看hook)，`忽略`则不关闭流',
+      },
+    },
+    {
+      field: 'playerType',
+      title: '播放方式',
+      width: 200,
+      slots: { default: 'playerType' },
+    },
+
     {
       field: 'createdAt',
       title: '创建时间',
@@ -81,7 +118,7 @@ const gridOptions: VxeGridProps<RowType> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: '操作',
-      width: 150,
+      width: 300,
     },
   ],
   height: 'auto',
@@ -186,6 +223,18 @@ function openPlayer(i: any) {
 // watch(state, (_msg) => {
 //   playerHight.value = state.value.fullscreen ? 600 : 300;
 // });
+
+async function closePlayer(item: any) {
+  loading(true);
+  try {
+    //  loading(true);
+    await fetchClosePull(item.id);
+    // gridApi.query();
+    message.success('操作成功');
+  } finally {
+    loading(false);
+  }
+}
 </script>
 
 <template>
@@ -216,12 +265,60 @@ function openPlayer(i: any) {
         </NTag>
       </template>
 
+      <template #enablePull="{ row }">
+        <NTag v-if="row.enablePull" round size="small" type="success">
+          开启
+        </NTag>
+        <NTag v-if="!row.enablePull" round size="small" type="error">
+          关闭
+        </NTag>
+      </template>
       <template #enableMp4="{ row }">
         <NTag v-if="row.enableMp4" round size="small" type="success">
           开启
         </NTag>
         <NTag v-if="!row.enableMp4" round size="small" type="error">
           关闭
+        </NTag>
+      </template>
+      <template #autoClose="{ row }">
+        <NTag v-if="row.autoClose === 'yes'" round size="small" type="success">
+          是
+        </NTag>
+        <NTag v-if="row.autoClose === 'no'" round size="small" type="error">
+          否
+        </NTag>
+        <NTag
+          v-if="row.autoClose === 'ignore'"
+          round
+          size="small"
+          type="primary"
+        >
+          忽略
+        </NTag>
+      </template>
+      <template #playerType="{ row }">
+        <NTag
+          v-if="row.playerType === 'manual'"
+          round
+          size="small"
+          type="success"
+        >
+          分配节点
+        </NTag>
+        <NTag
+          v-if="row.playerType === 'balance'"
+          round
+          size="small"
+          type="primary"
+        >
+          负载均衡
+        </NTag>
+      </template>
+
+      <template #nodeName="{ row }">
+        <NTag round size="small" type="primary">
+          {{ row.nodeName }}
         </NTag>
       </template>
       <template #action="{ row }">
@@ -234,6 +331,22 @@ function openPlayer(i: any) {
             </NButton>
           </template>
           <span>播放流</span>
+        </NPopover>
+
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NPopconfirm @positive-click="closePlayer(row)">
+              <template #trigger>
+                <NButton circle quaternary type="primary">
+                  <template #icon>
+                    <antdDisconnect />
+                  </template>
+                </NButton>
+              </template>
+              确定关闭拉流代理吗？
+            </NPopconfirm>
+          </template>
+          <span>关闭拉流代理</span>
         </NPopover>
 
         <NButton circle quaternary type="primary" @click="edit(row)">

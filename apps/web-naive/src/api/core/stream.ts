@@ -19,3 +19,11 @@ export async function fetchUpdatePull(form: any) {
 export async function fetchDelPull(id: string) {
   return requestClient.delete(`/stream/pull/${id}`);
 }
+
+export async function fetchClosePull(id: string) {
+  return requestClient.delete(`/stream/pull/close/proxy/${id}`);
+}
+
+export async function fetchProxyPull(id: string) {
+  return requestClient.post(`/stream/pull/proxy/${id}`);
+}
