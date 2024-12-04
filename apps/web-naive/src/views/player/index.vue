@@ -11,6 +11,7 @@ import { fetchProxyPull } from '#/api';
 
 import easyPlayer from './components/easy-player.vue';
 
+const emit = defineEmits(['playSuccess']);
 const parent = ref(null);
 const player = ref<any>();
 const item = defineModel<any>({ required: true });
@@ -19,13 +20,14 @@ onMounted(() => {
   console.log(item.value, '===');
   createProxy();
 });
-
+// 定义一个变量来接收父组件传来的方法
 async function createProxy() {
   try {
     await fetchProxyPull(item.value.id);
     player.value.play(
       `http://192.168.31.208/${item.value.app}/${item.value.stream}.live.flv`,
     );
+    emit('playSuccess', item.value.id);
   } finally {
     //
   }

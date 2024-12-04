@@ -216,6 +216,28 @@ const [Form, formApi] = useVbenForm({
       componentProps: {
         class: 'w-auto',
       },
+      fieldName: 'enableHls',
+      help: '是否开启HLS录制',
+      label: 'Hls录制',
+      rules: 'selectRequired',
+    },
+    {
+      component: 'Switch',
+      defaultValue: false,
+      componentProps: {
+        class: 'w-auto',
+      },
+      fieldName: 'enableAudio',
+      help: '是否开启音频',
+      label: '音频',
+      rules: 'selectRequired',
+    },
+    {
+      component: 'Switch',
+      defaultValue: false,
+      componentProps: {
+        class: 'w-auto',
+      },
       fieldName: 'enablePull',
       help: '添加、程序启动后自动拉流',
       label: '自动拉流',

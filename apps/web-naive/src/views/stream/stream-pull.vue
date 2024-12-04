@@ -11,7 +11,7 @@ import {
   MsPlay,
 } from '@vben/icons';
 
-import { NButton, NPopconfirm, NPopover, NTag } from 'naive-ui';
+import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
@@ -63,7 +63,18 @@ const gridOptions: VxeGridProps<RowType> = {
       width: 200,
       slots: { default: 'stream' },
     },
-    { field: 'url', title: '拉流地址', width: 500 },
+    {
+      field: 'status',
+      title: '状态',
+      width: 100,
+      slots: { default: 'status' },
+    },
+    {
+      field: 'url',
+      title: '拉流地址',
+      width: 500,
+      slots: { default: 'url' },
+    },
     {
       field: 'timeoutSec',
       title: '超时时间(秒)',
@@ -86,10 +97,22 @@ const gridOptions: VxeGridProps<RowType> = {
       },
     },
     {
+      field: 'enableAudio',
+      title: '音频',
+      width: 200,
+      slots: { default: 'enableAudio' },
+    },
+    {
       field: 'enableMp4',
       title: 'MP4录制',
       width: 200,
       slots: { default: 'enableMp4' },
+    },
+    {
+      field: 'enableHls',
+      title: 'Hls录制',
+      width: 200,
+      slots: { default: 'enableHls' },
     },
     {
       field: 'autoClose',
@@ -229,10 +252,29 @@ async function closePlayer(item: any) {
   try {
     //  loading(true);
     await fetchClosePull(item.id);
-    // gridApi.query();
+    gridApi.query();
     message.success('操作成功');
   } finally {
     loading(false);
+  }
+}
+
+// 播放成功回调，修改状态为0
+function playSuccess(id: string) {
+  const data = gridApi.grid.getData();
+  const item = data.find((item) => item.id === id);
+  if (item && item.status === '1') {
+    item.status = '0';
+  }
+}
+
+async function copyToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
+
+    message.success('复制成功');
+  } catch {
+    message.success('复制失败');
   }
 }
 </script>
@@ -264,12 +306,42 @@ async function closePlayer(item: any) {
           {{ row.stream }}
         </NTag>
       </template>
+      <template #url="{ row }">
+        <NText type="info" @click="copyToClipboard(row.url)">
+          {{ row.url }}
+        </NText>
+      </template>
+
+      <template #status="{ row }">
+        <NTag v-if="row.status === '0'" round size="small" type="success">
+          正在拉流
+        </NTag>
+        <NTag v-if="row.status === '1'" round size="small" type="error">
+          暂未拉流
+        </NTag>
+      </template>
 
       <template #enablePull="{ row }">
         <NTag v-if="row.enablePull" round size="small" type="success">
           开启
         </NTag>
         <NTag v-if="!row.enablePull" round size="small" type="error">
+          关闭
+        </NTag>
+      </template>
+      <template #enableAudio="{ row }">
+        <NTag v-if="row.enableAudio" round size="small" type="success">
+          开启
+        </NTag>
+        <NTag v-if="!row.enableAudio" round size="small" type="error">
+          关闭
+        </NTag>
+      </template>
+      <template #enableHls="{ row }">
+        <NTag v-if="row.enableHls" round size="small" type="success">
+          开启
+        </NTag>
+        <NTag v-if="!row.enableHls" round size="small" type="error">
           关闭
         </NTag>
       </template>
@@ -371,7 +443,7 @@ async function closePlayer(item: any) {
     <streamModal />
 
     <playerModal :title="title" class="h-[600px] w-[800px]">
-      <PlayerComponent v-model:model-value="item" />
+      <PlayerComponent v-model:model-value="item" @play-success="playSuccess" />
     </playerModal>
   </Page>
 </template>
