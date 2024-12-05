@@ -50,7 +50,13 @@ const formOptions: VbenFormProps = {
 const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
-    { title: '名称', width: 300, field: 'name', fixed: 'left' },
+    {
+      title: '名称',
+      width: 300,
+      field: 'name',
+      fixed: 'left',
+      slots: { default: 'name' },
+    },
     {
       field: 'app',
       title: '应用名',
@@ -293,6 +299,12 @@ async function copyToClipboard(text: string) {
           </template>
           添加拉流代理
         </NPopover>
+      </template>
+
+      <template #name="{ row }">
+        <NText type="info">
+          {{ row.name }}
+        </NText>
       </template>
 
       <template #app="{ row }">

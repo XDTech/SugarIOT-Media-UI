@@ -27,3 +27,6 @@ export async function fetchClosePull(id: string) {
 export async function fetchProxyPull(id: string) {
   return requestClient.post(`/stream/pull/proxy/${id}`);
 }
+export async function fetchProxyAddress(id: string) {
+  return requestClient.get(`/stream/pull/proxy/address/${id}`);
+}

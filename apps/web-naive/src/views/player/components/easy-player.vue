@@ -30,6 +30,9 @@ function playCreate() {
   easyplayer.on('playbackSeek', (data: any) => {
     console.log('playbackSeek', data);
   });
+  easyplayer.on('contextmenuClose', async () => {
+    await destory();
+  });
   playerInfo.value = easyplayer;
 }
 onMounted(() => {
@@ -41,15 +44,24 @@ onUnmounted(async () => {
 });
 
 async function destory() {
-  await playerInfo.value.destroy();
-  playerInfo.value = null;
+  if (playerInfo.value) {
+    await playerInfo.value.destroy();
+    playerInfo.value = null;
+  }
 }
 function play(url: string) {
-  console.log(url);
   playerInfo.value?.play(url);
+}
+async function replay(url: string) {
+  console.log(url);
+  await destory();
+  playCreate();
+  await playerInfo.value?.play(url);
+  console.log(playerInfo.value.getVideoInfo());
 }
 defineExpose({
   play,
+  replay,
 });
 </script>
 
