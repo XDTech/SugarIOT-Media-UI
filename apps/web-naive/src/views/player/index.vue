@@ -21,7 +21,7 @@ import {
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { fetchProxyAddress, fetchProxyPull } from '#/api';
+import { fetchProxyAddress } from '#/api';
 
 import easyPlayer from './components/easy-player.vue';
 
@@ -40,7 +40,6 @@ const options = ref<any[]>([]);
 // 定义一个变量来接收父组件传来的方法
 async function createProxy() {
   try {
-    await fetchProxyPull(item.value.id);
     const data = await fetchProxyAddress(item.value.id);
     if (data) {
       currentPlayerAddr.value = data.RtmpMediaSource[2];
