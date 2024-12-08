@@ -88,6 +88,12 @@ const gridOptions: VxeGridProps<RowType> = {
       titlePrefix: { content: '拉流超时时间' },
     },
     {
+      field: 'playerType',
+      title: '播放方式',
+      width: 200,
+      slots: { default: 'playerType' },
+    },
+    {
       field: 'nodeName',
       title: '播放节点',
       width: 200,
@@ -128,12 +134,6 @@ const gridOptions: VxeGridProps<RowType> = {
       titlePrefix: {
         content: '无人观看是否自动关闭流(不触发无人观看hook)，`忽略`则不关闭流',
       },
-    },
-    {
-      field: 'playerType',
-      title: '播放方式',
-      width: 200,
-      slots: { default: 'playerType' },
     },
 
     {
