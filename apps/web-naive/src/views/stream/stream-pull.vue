@@ -402,7 +402,7 @@ async function copyToClipboard(text: string) {
 
       <template #nodeName="{ row }">
         <NTag round size="small" type="primary">
-          {{ row.nodeName }}
+          {{ row.nodeName ? row.nodeName : '未分配' }}
         </NTag>
       </template>
       <template #action="{ row }">
