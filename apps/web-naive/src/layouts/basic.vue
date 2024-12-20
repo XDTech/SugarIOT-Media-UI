@@ -126,7 +126,25 @@ watch(
 );
 
 function procressSocketMsg(data: SocketMsgBean) {
+  console.warn(data);
   switch (data.types) {
+    case SocketMsgEnum.gbOffline: {
+      notification.error({
+        content: '国标设备离线',
+        description: `【${data.msg}】国标已离线`,
+        duration: 3000,
+      });
+      break;
+    }
+
+    case SocketMsgEnum.gbOnline: {
+      notification.success({
+        content: '国标设备上线',
+        description: `【${data.msg}】国标设备已上线`,
+        duration: 3000,
+      });
+      break;
+    }
     case SocketMsgEnum.mediaOffline: {
       notification.error({
         content: '服务离线',
@@ -135,7 +153,6 @@ function procressSocketMsg(data: SocketMsgBean) {
       });
       break;
     }
-
     case SocketMsgEnum.mediaOnline: {
       notification.success({
         content: '服务上线',

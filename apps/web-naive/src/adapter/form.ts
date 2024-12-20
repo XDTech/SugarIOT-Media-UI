@@ -29,6 +29,18 @@ setupVbenForm<ComponentType>({
       }
       return true;
     },
+    numberLengthRequired: (value, _params, ctx) => {
+      console.warn(value, _params, ctx);
+      if (value === undefined || value === null) {
+        return $t('ui.formRules.required', [ctx.label]);
+      }
+
+      if (String(value).length !== 7) {
+        return `请输入7位流水号`;
+      }
+
+      return true;
+    },
     selectRequired: (value, _params, ctx) => {
       if (value === undefined || value === null) {
         return $t('ui.formRules.selectRequired', [ctx.label]);

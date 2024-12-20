@@ -1,4 +1,6 @@
 export enum SocketMsgEnum {
+  gbOffline = 'gbOffline',
+  gbOnline = 'gbOnline',
   mediaOffline = 'mediaOffline',
   mediaOnline = 'mediaOnline',
 }

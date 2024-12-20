@@ -15,6 +15,7 @@ export const MdiQqchat = createIconifyIcon('mdi:qqchat');
 export const MdiPlus = createIconifyIcon('mdi:plus');
 
 export const MdiRefresh = createIconifyIcon('mdi:refresh');
+export const MdiCheck = createIconifyIcon('mdi:check-circle');
 
 export const MdiServer = createIconifyIcon('mdi:server-security');
 export const MdiWebSync = createIconifyIcon('mdi:web-sync');

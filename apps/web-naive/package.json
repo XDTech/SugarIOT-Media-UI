@@ -41,6 +41,7 @@
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
     "@vueuse/core": "catalog:",
+    "gsap": "^3.12.5",
     "naive-ui": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
