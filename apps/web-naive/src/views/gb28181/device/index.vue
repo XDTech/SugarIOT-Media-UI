@@ -263,7 +263,7 @@ function getStatus(item: any) {
                       {{ item.manufacturer }}
                     </NTag>
                   </template>
-                  生产厂商
+                  设备厂商
                 </NTooltip>
 
                 <NTooltip trigger="hover">

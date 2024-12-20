@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'gbDevice',
         path: '/gb/device',
-        component: () => import('#/views/gb2312/device/index.vue'),
+        component: () => import('#/views/gb28181/device/index.vue'),
       },
       {
         meta: {
@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'gbChannel',
         path: '/gb/channel',
-        component: () => import('#/views/gb2312/channel/index.vue'),
+        component: () => import('#/views/gb28181/channel/index.vue'),
       },
     ],
   },
