@@ -11,3 +11,17 @@ export async function fetchDeviceList(form: any) {
 export async function fetchCreateDevice(form: any) {
   return requestClient.post('/gb/device/register', form);
 }
+
+export async function fetchDeviceInfo(deviceId: any) {
+  return requestClient.get(`/gb/device/${deviceId}`);
+}
+
+export async function fetchUpdateDevice(form: any) {
+  return requestClient.put('/gb/device/register', form);
+}
+export async function fetchSyncInfo(deviceId: any) {
+  return requestClient.get(`/gb/device/sync/info/catalog/${deviceId}`);
+}
+export async function fetchDelDevice(deviceId: any) {
+  return requestClient.delete(`/gb/device/${deviceId}`);
+}

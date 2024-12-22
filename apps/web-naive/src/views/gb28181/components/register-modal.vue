@@ -9,7 +9,11 @@ import { NButton, NSpace } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { fetchCreateDevice } from '#/api/core/gb';
+import {
+  fetchCreateDevice,
+  fetchDeviceInfo,
+  fetchUpdateDevice,
+} from '#/api/core/gb';
 
 const userStore = useUserStore();
 
@@ -27,6 +31,15 @@ const [Form, formApi] = useVbenForm({
   },
 
   schema: [
+    {
+      component: 'Input',
+      fieldName: 'id',
+      label: 'id',
+      dependencies: {
+        show: false,
+        triggerFields: ['none'],
+      },
+    },
     {
       component: 'Input',
       fieldName: 'deviceName',
@@ -65,7 +78,7 @@ const [Form, formApi] = useVbenForm({
         ),
       help: '国标唯一ID，格式为7位',
       renderComponentContent: () => ({
-        prefix: () => `${tenantCode.value}0000`,
+        prefix: () => `${tenantCode.value}`,
       }),
     },
 
@@ -102,9 +115,20 @@ const [Form, formApi] = useVbenForm({
   ],
 });
 const [Modal, modalApi] = useVbenModal({
-  onOpened: () => {
-    console.warn(userStore.userInfo);
-    tenantCode.value = userStore.userInfo?.tenantCode;
+  onOpened: () => {},
+  async onOpenChange(isOpen: boolean) {
+    if (isOpen) {
+      tenantCode.value = `${userStore.userInfo?.tenantCode}0000`;
+      const d = modalApi.getData<Record<string, any>>();
+
+      let f: any = {};
+      if (d.operator === 'edit') {
+        f = await fetchDeviceInfo(d.id);
+        f.deviceId = f.deviceId.slice(tenantCode.value.length);
+      }
+
+      await formApi.setValues({ ...f });
+    }
   },
 });
 
@@ -115,11 +139,10 @@ async function handleSubmit() {
   const { valid } = await formApi.validate();
   if (!valid) return;
   setTrue();
-
+  const d = modalApi.getData<Record<string, any>>();
   try {
     const f = await formApi.getValues();
-    await fetchCreateDevice(f);
-
+    await (d.operator === 'edit' ? fetchUpdateDevice(f) : fetchCreateDevice(f));
     message.success('操作成功');
     modalApi.setData({ refresh: true });
     closeDrawer();

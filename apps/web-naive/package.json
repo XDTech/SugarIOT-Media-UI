@@ -42,6 +42,7 @@
     "@vben/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "gsap": "^3.12.5",
+    "moment": "^2.30.1",
     "naive-ui": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",

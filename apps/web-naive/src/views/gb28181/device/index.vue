@@ -13,6 +13,7 @@ import {
   MdiRestart,
 } from '@vben/icons';
 
+import moment from 'moment';
 import {
   NBadge,
   NButton,
@@ -20,6 +21,7 @@ import {
   NEmpty,
   NGrid,
   NGridItem,
+  NPopconfirm,
   NSpin,
   NTag,
   NText,
@@ -27,7 +29,7 @@ import {
   useMessage,
 } from 'naive-ui';
 
-import { fetchDeviceList } from '#/api/core/gb';
+import { fetchDelDevice, fetchDeviceList, fetchSyncInfo } from '#/api/core/gb';
 
 import RegisterModal from '../components/register-modal.vue';
 
@@ -38,6 +40,8 @@ const q = ref({
 const message = useMessage();
 
 const [visible, { setTrue: openModal }] = useBoolean();
+const title = ref('新增国标设备');
+const operator = ref('add');
 
 const [loadingFlag, { setTrue: openLoading, setFalse: closeLoading }] =
   useBoolean();
@@ -72,6 +76,10 @@ async function getList() {
 getList();
 
 function openRegister() {
+  operator.value = 'add';
+  title.value = '新增节点';
+  modalApi.setState({ title: title.value });
+  modalApi.setData({ operator: operator.value });
   modalApi.open();
 }
 
@@ -123,7 +131,8 @@ function getStatus(item: any) {
               }),
           },
         ),
-      default: () => '在线',
+      default: () =>
+        `在线 更新时间：${moment(item.syncTime).format('YYYY-MM-DD HH:mm:ss')}`,
     },
   );
   const offline = h(
@@ -150,6 +159,40 @@ function getStatus(item: any) {
     },
   );
   return item.status === '1' ? online : offline;
+}
+
+async function syncInfo(item: any) {
+  try {
+    await fetchSyncInfo(item.id);
+    message.success('操作成功');
+  } catch {
+    return Promise<true>;
+  } finally {
+    // 重新获取列表
+  }
+}
+async function delDevice(item: any) {
+  openLoading();
+  try {
+    await fetchDelDevice(item.id);
+    message.success('操作成功');
+  } catch {
+    return Promise<true>;
+  } finally {
+    // 重新获取列表
+    getList();
+  }
+}
+
+function editInfo(id: any) {
+  operator.value = 'edit';
+  title.value = '编辑配置';
+  modalApi.setState({ title: title.value });
+  modalApi.setData({
+    operator: operator.value,
+    id,
+  });
+  modalApi.open();
 }
 </script>
 
@@ -306,26 +349,44 @@ function getStatus(item: any) {
                     查看国标信息
                   </NTooltip>
 
-                  <NTooltip trigger="hover">
+                  <NPopconfirm @positive-click="syncInfo(item)">
                     <template #trigger>
-                      <NButton circle secondary size="small" type="info">
-                        <template #icon>
-                          <MdiRestart />
+                      <NTooltip trigger="hover">
+                        <template #trigger>
+                          <NButton circle secondary size="small" type="info">
+                            <template #icon>
+                              <MdiRestart />
+                            </template>
+                          </NButton>
                         </template>
-                      </NButton>
+                        更新通道
+                      </NTooltip>
                     </template>
-                    更新通道
-                  </NTooltip>
-                  <NButton circle secondary size="small" type="info">
+                    同步设备信息以及通道，同步后会发送通知
+                  </NPopconfirm>
+
+                  <NButton
+                    circle
+                    secondary
+                    size="small"
+                    type="info"
+                    @click="editInfo(item.id)"
+                  >
                     <template #icon>
                       <antdEdit />
                     </template>
                   </NButton>
-                  <NButton circle secondary size="small" type="error">
-                    <template #icon>
-                      <antdDelete />
+
+                  <NPopconfirm @positive-click="delDevice(item)">
+                    <template #trigger>
+                      <NButton circle secondary size="small" type="error">
+                        <template #icon>
+                          <antdDelete />
+                        </template>
+                      </NButton>
                     </template>
-                  </NButton>
+                    确定删除吗
+                  </NPopconfirm>
                 </div>
               </template>
             </NCard>
