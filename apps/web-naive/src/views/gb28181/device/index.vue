@@ -132,8 +132,7 @@ function getStatus(item: any) {
               }),
           },
         ),
-      default: () =>
-        `在线 更新时间：${moment(item.syncTime).format('YYYY-MM-DD HH:mm:ss')}`,
+      default: () => `在线`,
     },
   );
   const offline = h(
@@ -358,7 +357,9 @@ function openChannelList(id: any) {
                           ></span>
                         </template>
                         {{
-                          `${moment(item.syncTime).format('YYYY/MM/DD HH:mm:ss')}`
+                          item.syncTime
+                            ? `${moment(item.syncTime).format('YYYY/MM/DD HH:mm:ss')}`
+                            : '暂未同步 '
                         }}
                       </NButton>
                     </template>
