@@ -31,6 +31,7 @@ import {
 
 import { fetchDelDevice, fetchDeviceList, fetchSyncInfo } from '#/api/core/gb';
 
+import ChannelListModal from '../components/channel-list-modal.vue';
 import RegisterModal from '../components/register-modal.vue';
 
 const q = ref({
@@ -194,6 +195,26 @@ function editInfo(id: any) {
   });
   modalApi.open();
 }
+
+// channel list
+const [channelModal, channelApi] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ChannelListModal,
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+      const d = modalApi.getData();
+      if (d.refresh) {
+        getList();
+      }
+    }
+  },
+});
+
+function openChannelList(id: any) {
+  channelApi.setData({ id });
+  channelApi.open();
+}
 </script>
 
 <template>
@@ -325,7 +346,13 @@ function editInfo(id: any) {
                 <div style="display: flex; gap: 5px; justify-content: flex-end">
                   <NTooltip trigger="hover">
                     <template #trigger>
-                      <NButton circle secondary size="small" type="info">
+                      <NButton
+                        circle
+                        secondary
+                        size="small"
+                        type="info"
+                        @click="openChannelList(item.id)"
+                      >
                         <template #icon>
                           <span
                             class="icon-[mdi--video-wireless-outline]"
@@ -398,6 +425,7 @@ function editInfo(id: any) {
     </NCard>
 
     <regModal />
+    <channelModal />
   </Page>
 </template>
 

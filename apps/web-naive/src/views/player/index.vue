@@ -22,14 +22,20 @@ import {
 
 import { message } from '#/adapter/naive';
 import { fetchProxyAddress } from '#/api';
+import { fetchChannelInvite } from '#/api/core/gb';
 
 import easyPlayer from './components/easy-player.vue';
 
+const props = defineProps({
+  types: {
+    type: String,
+    required: true,
+  },
+});
 const emit = defineEmits(['playSuccess']);
 const parent = ref(null);
 const player = ref<any>();
 const item = defineModel<any>({ required: true });
-
 onMounted(() => {
   console.log(item.value, '===');
   createProxy();
@@ -40,7 +46,13 @@ const options = ref<any[]>([]);
 // 定义一个变量来接收父组件传来的方法
 async function createProxy() {
   try {
-    const data = await fetchProxyAddress(item.value.id);
+    let data: any = null;
+    if (props.types === 'gb') {
+      data = await fetchChannelInvite(item.value.id);
+    } else if (props.types === 'proxy') {
+      data = await fetchProxyAddress(item.value.id);
+    }
+
     if (data) {
       currentPlayerAddr.value = data.RtmpMediaSource[2];
       searchPlayerAddr.value = currentPlayerAddr.value;

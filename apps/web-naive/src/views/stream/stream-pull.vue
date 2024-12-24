@@ -455,7 +455,11 @@ async function copyToClipboard(text: string) {
     <streamModal />
 
     <playerModal :title="title" class="h-[600px] w-[800px]">
-      <PlayerComponent v-model:model-value="item" @play-success="playSuccess" />
+      <PlayerComponent
+        v-model:model-value="item"
+        types="proxy"
+        @play-success="playSuccess"
+      />
     </playerModal>
   </Page>
 </template>

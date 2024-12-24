@@ -25,3 +25,11 @@ export async function fetchSyncInfo(deviceId: any) {
 export async function fetchDelDevice(deviceId: any) {
   return requestClient.delete(`/gb/device/${deviceId}`);
 }
+
+export async function fetchChannelList(deviceId: any) {
+  return requestClient.get(`/gb/channel/list/${deviceId}`);
+}
+
+export async function fetchChannelInvite(channelId: any) {
+  return requestClient.get(`/gb/channel/invite/${channelId}`);
+}

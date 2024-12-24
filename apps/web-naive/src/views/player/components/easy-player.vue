@@ -53,11 +53,9 @@ function play(url: string) {
   playerInfo.value?.play(url);
 }
 async function replay(url: string) {
-  console.log(url);
   await destory();
   playCreate();
   await playerInfo.value?.play(url);
-  console.log(playerInfo.value.getVideoInfo());
 }
 defineExpose({
   play,
@@ -72,7 +70,7 @@ defineExpose({
 <style scoped>
 .player-box {
   inset: 0;
-  height: 100%;
+  z-index: 9000;
   background-color: black;
 }
 </style>
