@@ -256,7 +256,7 @@ function openChannelList(id: any) {
                 }
               "
               hoverable
-              style="width: 300px"
+              style="width: 330px"
             >
               <!-- <NWatermark
                 :content="getContent(item.deviceType)"
@@ -344,6 +344,27 @@ function openChannelList(id: any) {
               </template>
               <template #action>
                 <div style="display: flex; gap: 5px; justify-content: flex-end">
+                  <NTooltip trigger="hover">
+                    <template #trigger>
+                      <NButton
+                        quaternary
+                        size="tiny"
+                        style="margin-top: 3px"
+                        type="success"
+                      >
+                        <template #icon>
+                          <span
+                            class="icon-[line-md--cloud-alt-download-loop]"
+                          ></span>
+                        </template>
+                        {{
+                          `${moment(item.syncTime).format('YYYY/MM/DD HH:mm:ss')}`
+                        }}
+                      </NButton>
+                    </template>
+                    最近同步时间
+                  </NTooltip>
+
                   <NTooltip trigger="hover">
                     <template #trigger>
                       <NButton

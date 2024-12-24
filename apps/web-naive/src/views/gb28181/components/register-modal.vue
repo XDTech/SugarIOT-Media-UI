@@ -42,7 +42,7 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'Input',
-      fieldName: 'deviceName',
+      fieldName: 'name',
       label: '设备名称',
       componentProps: {
         placeholder: '请输入设备名称',

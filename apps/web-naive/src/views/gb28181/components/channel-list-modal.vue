@@ -9,7 +9,7 @@ import { MsPlay } from '@vben/icons';
 import { NButton, NPopover, NTag } from 'naive-ui';
 
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { fetchChannelList } from '#/api/core/gb';
+import { fetchChannelInvite, fetchChannelList } from '#/api/core/gb';
 
 const deviceId = ref();
 const list = ref();
@@ -123,10 +123,12 @@ async function getChannelList() {
 const item = ref();
 const title = ref();
 const showModal = ref(false);
-function openPlayer(i: any) {
-  item.value = i;
-  title.value = `【${i.name}】视频预览`;
-  showModal.value = true;
+async function openPlayer(row: any) {
+  try {
+    await fetchChannelInvite(row.id);
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
