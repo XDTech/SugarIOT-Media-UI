@@ -6,7 +6,6 @@
 import { onMounted, ref } from 'vue';
 
 import { Mscopy, MsPlay } from '@vben/icons';
-import { copyToClipboard } from '@vben/utils';
 
 import {
   NButton,
@@ -23,6 +22,7 @@ import {
 import { message } from '#/adapter/naive';
 import { fetchProxyAddress } from '#/api';
 import { fetchChannelInvite } from '#/api/core/gb';
+import { copyToClipboard } from '#/utils/util';
 
 import easyPlayer from './components/easy-player.vue';
 

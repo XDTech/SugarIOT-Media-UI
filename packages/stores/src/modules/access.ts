@@ -4,7 +4,6 @@ import type { RouteRecordRaw } from 'vue-router';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
 type AccessToken = null | string;
-type AccessTokenName = string;
 
 interface AccessState {
   /**
@@ -23,11 +22,6 @@ interface AccessState {
    * 登录 accessToken
    */
   accessToken: AccessToken;
-
-  /**
-   * 登录 accessToken name
-   */
-  accessTokenName: AccessTokenName;
   /**
    * 是否已经检查过权限
    */
@@ -47,6 +41,25 @@ interface AccessState {
  */
 export const useAccessStore = defineStore('core-access', {
   actions: {
+    getMenuByPath(path: string) {
+      function findMenu(
+        menus: MenuRecordRaw[],
+        path: string,
+      ): MenuRecordRaw | undefined {
+        for (const menu of menus) {
+          if (menu.path === path) {
+            return menu;
+          }
+          if (menu.children) {
+            const matched = findMenu(menu.children, path);
+            if (matched) {
+              return matched;
+            }
+          }
+        }
+      }
+      return findMenu(this.accessMenus, path);
+    },
     setAccessCodes(codes: string[]) {
       this.accessCodes = codes;
     },
@@ -58,9 +71,6 @@ export const useAccessStore = defineStore('core-access', {
     },
     setAccessToken(token: AccessToken) {
       this.accessToken = token;
-    },
-    setAccessTokenName(name: AccessTokenName) {
-      this.accessTokenName = name;
     },
     setIsAccessChecked(isAccessChecked: boolean) {
       this.isAccessChecked = isAccessChecked;
@@ -81,7 +91,6 @@ export const useAccessStore = defineStore('core-access', {
     accessMenus: [],
     accessRoutes: [],
     accessToken: null,
-    accessTokenName: '',
     isAccessChecked: false,
     loginExpired: false,
     refreshToken: null,
