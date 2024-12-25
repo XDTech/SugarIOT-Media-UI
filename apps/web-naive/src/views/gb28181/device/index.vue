@@ -1,7 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <!-- eslint-disable unused-imports/no-unused-vars -->
 <script lang="ts" setup>
-import { h, ref } from 'vue';
+import { computed, h, ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { Page, useVbenModal } from '@vben/common-ui';
@@ -21,6 +21,7 @@ import {
   NEmpty,
   NGrid,
   NGridItem,
+  NPagination,
   NPopconfirm,
   NSpin,
   NTag,
@@ -38,6 +39,28 @@ const q = ref({
   pi: 1,
   ps: 10,
 });
+
+const pageSizes = [
+  {
+    label: '10 每页',
+    value: 10,
+  },
+  {
+    label: '20 每页',
+    value: 20,
+  },
+  {
+    label: '30 每页',
+    value: 30,
+  },
+  {
+    label: '40 每页',
+    value: 40,
+  },
+];
+
+const totalItems = ref(0);
+
 const message = useMessage();
 
 const [visible, { setTrue: openModal }] = useBoolean();
@@ -70,6 +93,7 @@ async function getList() {
   const data = await fetchDeviceList(q.value);
 
   deviceList.value = data.data;
+  totalItems.value = data.total;
 
   setTimeout(() => closeLoading(), 200);
 }
@@ -214,14 +238,23 @@ function openChannelList(id: any) {
   channelApi.setData({ id });
   channelApi.open();
 }
+
+// 分页
+
+function pageUpdate(pi: any) {
+  getList();
+}
+function pageUpdateSize(ps: any) {
+  getList();
+}
+
+const pageCount = computed(() => {
+  return Math.ceil(totalItems.value / q.value.ps);
+});
 </script>
 
 <template>
-  <Page
-    content-class="flex flex-col gap-4"
-    description="注册的国标设备"
-    title="国标设备"
-  >
+  <Page description="注册的国标设备" title="国标设备">
     <template #extra>
       <NButton type="primary" @click="openRegister">
         <template #icon>
@@ -237,8 +270,11 @@ function openChannelList(id: any) {
       </NButton>
     </template>
 
-    <NCard>
-      <NSpin :show="loadingFlag">
+    <NSpin :show="loadingFlag">
+      <template #icon>
+        <span class="icon-[svg-spinners--6-dots-scale-middle]"> </span>
+      </template>
+      <NCard v-if="deviceList.length > 0">
         <NGrid
           :x-gap="12"
           :y-gap="24"
@@ -442,9 +478,24 @@ function openChannelList(id: any) {
           </NGridItem>
         </NGrid>
 
-        <NEmpty v-if="deviceList.length === 0" class="c-empty" />
-      </NSpin>
-    </NCard>
+        <template #footer>
+          <NPagination
+            v-model:page="q.pi"
+            v-model:page-size="q.ps"
+            :page-count="pageCount"
+            :page-sizes="pageSizes"
+            show-size-picker
+            style="float: right"
+            @update:page="pageUpdate"
+            @update:page-size="pageUpdateSize"
+          />
+        </template>
+      </NCard>
+
+      <NCard v-if="deviceList.length === 0">
+        <NEmpty class="c-empty" />
+      </NCard>
+    </NSpin>
 
     <regModal />
     <channelModal />
