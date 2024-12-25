@@ -278,7 +278,7 @@ const pageCount = computed(() => {
         <NGrid
           :x-gap="12"
           :y-gap="24"
-          cols="1 s:2 l:3 xxl:5"
+          cols="1 xs:2 l:4"
           item-responsive
           responsive="screen"
         >
@@ -291,7 +291,7 @@ const pageCount = computed(() => {
                 }
               "
               hoverable
-              style="width: 330px"
+              style="width: 100%; min-width: 330px"
             >
               <!-- <NWatermark
                 :content="getContent(item.deviceType)"
