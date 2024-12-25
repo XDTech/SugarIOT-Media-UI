@@ -101,8 +101,8 @@ function play() {
 
 <template>
   <NFlex style="height: 100%" vertical>
-    <easyPlayer ref="player" class="h-1/2" />
-    <NTabs animated class="h-1/2" type="line">
+    <easyPlayer ref="player" class="h-2/3" />
+    <NTabs animated class="h-1/3" type="line">
       <NTabPane name="addr" tab="实时地址">
         <NInputGroup>
           <NInputGroupLabel>播放地址</NInputGroupLabel>

@@ -33,3 +33,11 @@ export async function fetchChannelList(deviceId: any) {
 export async function fetchChannelInvite(channelId: any) {
   return requestClient.get(`/gb/channel/invite/${channelId}`);
 }
+
+export async function fetchChannelPageList(form: any) {
+  const data = await requestClient.get(`/gb/channel/page/list`, {
+    params: form,
+  });
+
+  return data;
+}

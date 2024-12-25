@@ -278,7 +278,7 @@ const pageCount = computed(() => {
         <NGrid
           :x-gap="12"
           :y-gap="24"
-          cols="1 s:2 l:4 xxl:5"
+          cols="1 s:2 l:3 xxl:5"
           item-responsive
           responsive="screen"
         >

@@ -32,6 +32,15 @@ const routes: RouteRecordRaw[] = [
         path: '/gb/channel',
         component: () => import('#/views/gb28181/channel/index.vue'),
       },
+      {
+        meta: {
+          icon: 'icon-park:inbox-upload-r',
+          title: '国标级联',
+        },
+        name: 'cascade',
+        path: '/gb/cascade',
+        component: () => import('#/views/gb28181/channel/index.vue'),
+      },
     ],
   },
 ];
