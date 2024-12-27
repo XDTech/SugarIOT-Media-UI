@@ -292,7 +292,7 @@ function createOption(): DropdownMixedOption[] {
         <NGrid
           :x-gap="12"
           :y-gap="24"
-          cols="1 s:2 l:4 xxl:5"
+          cols="1 m:2 l:4 xxl:5"
           item-responsive
           responsive="screen"
         >

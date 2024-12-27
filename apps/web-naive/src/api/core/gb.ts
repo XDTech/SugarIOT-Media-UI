@@ -41,3 +41,7 @@ export async function fetchChannelPageList(form: any) {
 
   return data;
 }
+
+export async function fetchSystemConfig() {
+  return requestClient.get('/gb/device/system/config');
+}

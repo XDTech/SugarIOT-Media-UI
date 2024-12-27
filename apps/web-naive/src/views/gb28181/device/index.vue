@@ -33,6 +33,7 @@ import {
 import { fetchDelDevice, fetchDeviceList, fetchSyncInfo } from '#/api/core/gb';
 
 import ChannelListModal from '../components/channel-list-modal.vue';
+import DeviceInfoModal from '../components/device-info-modal.vue';
 import RegisterModal from '../components/register-modal.vue';
 
 const q = ref({
@@ -84,10 +85,18 @@ const [regModal, modalApi] = useVbenModal({
   },
 });
 
+const [infoModal, infoModalApi] = useVbenModal({
+  footer: false,
+});
+
 // get list
 
 const deviceList = ref<any[]>([]);
 
+// device info
+const deviceId = ref();
+const infoTitle = ref('');
+// ======end======
 async function getList() {
   openLoading();
   const data = await fetchDeviceList(q.value);
@@ -251,6 +260,13 @@ function pageUpdateSize(ps: any) {
 const pageCount = computed(() => {
   return Math.ceil(totalItems.value / q.value.ps);
 });
+
+// info modal
+function openInfo(item: any) {
+  deviceId.value = item.id;
+  infoTitle.value = `【${item.name}】国标设备信息`;
+  infoModalApi.open();
+}
 </script>
 
 <template>
@@ -278,7 +294,7 @@ const pageCount = computed(() => {
         <NGrid
           :x-gap="12"
           :y-gap="24"
-          cols="1 xs:2 l:4"
+          cols="1  m:2  l:4"
           item-responsive
           responsive="screen"
         >
@@ -423,7 +439,13 @@ const pageCount = computed(() => {
 
                   <NTooltip trigger="hover">
                     <template #trigger>
-                      <NButton circle secondary size="small" type="info">
+                      <NButton
+                        circle
+                        secondary
+                        size="small"
+                        type="info"
+                        @click="openInfo(item)"
+                      >
                         <template #icon>
                           <span
                             class="icon-[mdi--information-slab-circle-outline]"
@@ -499,6 +521,10 @@ const pageCount = computed(() => {
 
     <regModal />
     <channelModal />
+
+    <infoModal :title="infoTitle" class="h-[600px] w-[800px]">
+      <DeviceInfoModal :model-value="deviceId" />
+    </infoModal>
   </Page>
 </template>
 
