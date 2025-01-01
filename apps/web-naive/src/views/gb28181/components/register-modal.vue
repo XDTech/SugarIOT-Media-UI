@@ -118,7 +118,7 @@ const [Modal, modalApi] = useVbenModal({
   onOpened: () => {},
   async onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      tenantCode.value = `${userStore.userInfo?.tenantCode}0000`;
+      tenantCode.value = `${userStore.userInfo?.tenantCode}0000111`;
       const d = modalApi.getData<Record<string, any>>();
 
       let f: any = {};

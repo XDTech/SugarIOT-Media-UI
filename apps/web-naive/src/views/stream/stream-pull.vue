@@ -16,6 +16,7 @@ import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
 import { fetchClosePull, fetchDelPull, fetchPullList } from '#/api';
+import { getStreamPrefix } from '#/utils/util';
 
 import PlayerComponent from '../player/index.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
@@ -28,7 +29,7 @@ interface RowType {
   productName: string;
   releaseDate: string;
 }
-
+const tenantCodePrefix = ref(getStreamPrefix());
 const formOptions: VbenFormProps = {
   // 默认展开
   collapsed: true,
@@ -315,7 +316,7 @@ async function copyToClipboard(text: string) {
 
       <template #stream="{ row }">
         <NTag round size="small" type="info">
-          {{ row.stream }}
+          {{ row.stream.slice(tenantCodePrefix.length) }}
         </NTag>
       </template>
       <template #url="{ row }">

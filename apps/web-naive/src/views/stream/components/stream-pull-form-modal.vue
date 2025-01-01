@@ -5,6 +5,7 @@ import { ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { useVbenModal } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import { NButton, NSpace } from 'naive-ui';
 
@@ -16,13 +17,14 @@ import {
   fetchPullItem,
   fetchUpdatePull,
 } from '#/api';
+import { getStreamPrefix } from '#/utils/util';
 
 interface Option {
   label: any;
   value: any;
 }
 const nodeList = ref<Option[]>([]);
-
+const userStore = useUserStore();
 async function getNodeList() {
   const data = await fetchNodeList();
   data.forEach((element: any) => {
@@ -34,6 +36,8 @@ async function getNodeList() {
 }
 
 getNodeList();
+
+const tenantCodePrefix = ref(getStreamPrefix());
 
 const [loading, { setTrue, setFalse }] = useBoolean(false);
 const [Form, formApi] = useVbenForm({
@@ -71,10 +75,13 @@ const [Form, formApi] = useVbenForm({
       component: 'Input',
       fieldName: 'app',
       label: 'App',
+      // defaultValue: userStore.userInfo?.tenantCode,
+      defaultValue: 'proxy',
       componentProps: {
         placeholder: '请输入App名称',
+        disabled: true,
       },
-      help: '流应用名，eg: app',
+      help: '流应用名',
       rules: 'required',
     },
     {
@@ -86,6 +93,9 @@ const [Form, formApi] = useVbenForm({
       },
       help: '流名称，eg:live',
       rules: 'required',
+      // renderComponentContent: () => ({
+      //   prefix: () => `${tenantCode.value}`,
+      // }),
     },
     {
       component: 'Input',
@@ -252,9 +262,10 @@ const [Modal, modalApi] = useVbenModal({
     if (isOpen) {
       const d = modalApi.getData<Record<string, any>>();
 
-      let f = {};
+      let f: any = {};
       if (d.operator === 'edit') {
         f = await fetchPullItem(d.id);
+        f.stream = f.stream.slice(tenantCodePrefix.value.length);
       }
 
       await formApi.setValues({ ...f });

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
+import { useUserStore } from '@vben/stores';
+
 import moment from 'moment';
 import {
   NDescriptions,
@@ -13,8 +15,9 @@ import {
 
 import { fetchDeviceInfo, fetchSystemConfig } from '#/api/core/gb';
 
+const userStore = useUserStore();
 const deviceId = defineModel();
-
+const tenantCode = ref(userStore.userInfo?.tenantCode);
 const defaultDevice = {
   id: '',
   name: '',
@@ -172,6 +175,14 @@ function getContent(type: string) {
         </NDescriptionsItem>
         <NDescriptionsItem label="心跳周期">
           <NText depth="3"> 1-60(秒) </NText>
+        </NDescriptionsItem>
+      </NDescriptions>
+
+      <NDivider title-placement="center"> 通道配置 </NDivider>
+
+      <NDescriptions :column="4" bordered label-placement="top">
+        <NDescriptionsItem label="通道编码">
+          <NText depth="3"> {{ `${tenantCode}0000132+{7位流水号}` }} </NText>
         </NDescriptionsItem>
       </NDescriptions>
     </NTabPane>

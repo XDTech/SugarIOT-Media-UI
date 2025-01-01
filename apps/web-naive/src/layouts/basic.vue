@@ -17,6 +17,8 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
+import { NBadge, NFlex, NText, NTooltip } from 'naive-ui';
+
 import { notification } from '#/adapter/naive';
 import { $t } from '#/locales';
 import { useAuthStore, useWebSocketStore } from '#/store';
@@ -62,6 +64,9 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
+
+const uploadSpeed = ref('0.00KB');
+const downloadSpeed = ref('0.00KB');
 
 const menus = computed(() => [
   {
@@ -136,7 +141,6 @@ function procressSocketMsg(data: SocketMsgBean) {
       });
       break;
     }
-
     case SocketMsgEnum.gbOnline: {
       notification.success({
         content: '国标设备上线',
@@ -145,6 +149,7 @@ function procressSocketMsg(data: SocketMsgBean) {
       });
       break;
     }
+
     case SocketMsgEnum.mediaOffline: {
       notification.error({
         content: '服务离线',
@@ -159,6 +164,11 @@ function procressSocketMsg(data: SocketMsgBean) {
         description: `【${data.msg}】实例已上线`,
         duration: 3000,
       });
+      break;
+    }
+    case SocketMsgEnum.networkSpeed: {
+      uploadSpeed.value = data.data.uploadSpeed;
+      downloadSpeed.value = data.data.downloadSpeed;
       break;
     }
   }
@@ -198,6 +208,33 @@ watch(latestMessage, (msg: MessageEvent) => {
         @clear="handleNoticeClear"
         @make-all="handleMakeAll"
       />
+    </template>
+    <template #header-right-49>
+      <NFlex style="margin-right: 10px" vertical>
+        <NFlex>
+          <NBadge dot processing style="margin-top: 3px" type="success" />
+          <span class="icon-[line-md--uploading-loop]"></span>
+          <NTooltip trigger="hover">
+            <template #trigger>
+              <NText depth="3"> {{ uploadSpeed }} </NText>
+            </template>
+            上行速度
+          </NTooltip>
+        </NFlex>
+
+        <NFlex>
+          <NBadge dot processing style="margin-top: 3px" type="info" />
+          <span class="icon-[line-md--downloading-loop]"></span>
+          <NTooltip trigger="hover">
+            <template #trigger>
+              <NText depth="3" style="width: 80px">
+                {{ downloadSpeed }}
+              </NText>
+            </template>
+            下载速度
+          </NTooltip>
+        </NFlex>
+      </NFlex>
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal

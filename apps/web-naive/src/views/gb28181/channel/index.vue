@@ -9,8 +9,11 @@ import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { fetchClosePull, fetchDelPull } from '#/api';
-import { fetchChannelPageList } from '#/api/core/gb';
+import {
+  fetchChannelPageList,
+  fetchDelChannel,
+  fetchSendBye,
+} from '#/api/core/gb';
 
 import PlayerComponent from '../../player/index.vue';
 
@@ -71,12 +74,12 @@ const gridOptions: VxeGridProps<RowType> = {
 
     {
       title: '厂家',
-      width: 100,
+      width: 150,
       field: 'manufacturer',
     },
     {
       title: '地址',
-      width: 100,
+      width: 150,
       field: 'address',
     },
     {
@@ -86,11 +89,33 @@ const gridOptions: VxeGridProps<RowType> = {
     },
     {
       field: 'status',
-      title: '在线状态',
+      title: '通道状态',
       width: 100,
       slots: { default: 'status' },
     },
+    {
+      field: 'status',
+      title: '播放状态',
+      width: 100,
+      slots: { default: 'playStatus' },
+    },
 
+    {
+      title: '经度',
+      width: 150,
+      field: 'lng',
+    },
+    {
+      title: '纬度',
+      width: 150,
+      field: 'lat',
+    },
+    {
+      title: 'PTZ类型',
+      width: 150,
+      field: 'ptzType',
+      slots: { default: 'ptzType' },
+    },
     {
       field: 'syncTime',
       title: '同步时间',
@@ -161,7 +186,7 @@ function loading(params: boolean) {
 async function deleteItem(id: string) {
   loading(true);
   try {
-    await fetchDelPull(id);
+    await fetchDelChannel(id);
     message.success('操作成功');
     gridApi.query();
   } finally {
@@ -189,14 +214,14 @@ function openPlayer(i: any) {
 // });
 
 async function closePlayer(item: any) {
-  loading(true);
+  // loading(true);
   try {
     //  loading(true);
-    await fetchClosePull(item.id);
+    await fetchSendBye(item.id);
     gridApi.query();
     message.success('操作成功');
   } finally {
-    loading(false);
+    // loading(false);
   }
 }
 
@@ -263,6 +288,40 @@ async function copyToClipboard(text: string) {
         </NTag>
       </template>
 
+      <template #playStatus="{ row }">
+        <NTag
+          v-if="row.playStatus === 'online'"
+          round
+          size="small"
+          type="success"
+        >
+          正在播放
+        </NTag>
+        <NTag
+          v-if="row.playStatus === 'offline'"
+          round
+          size="small"
+          type="error"
+        >
+          暂未播放
+        </NTag>
+      </template>
+
+      <template #ptzType="{ row }">
+        <NTag v-if="row.ptzType === 1" round size="small" type="info">
+          球机
+        </NTag>
+        <NTag v-if="row.ptzType === 2" round size="small" type="info">
+          半球
+        </NTag>
+        <NTag v-if="row.ptzType === 3" round size="small" type="info">
+          固定枪机
+        </NTag>
+        <NTag v-if="row.ptzType === 4" round size="small" type="info">
+          遥控枪机
+        </NTag>
+      </template>
+
       <template #action="{ row }">
         <NPopover trigger="hover">
           <template #trigger>
@@ -285,10 +344,10 @@ async function copyToClipboard(text: string) {
                   </template>
                 </NButton>
               </template>
-              确定关闭拉流代理吗？
+              确定关闭国标流吗？
             </NPopconfirm>
           </template>
-          <span>关闭拉流代理</span>
+          <span>关闭国标流</span>
         </NPopover>
 
         <NPopconfirm @positive-click="deleteItem(row.id)">

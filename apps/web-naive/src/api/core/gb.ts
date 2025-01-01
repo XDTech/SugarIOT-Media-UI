@@ -45,3 +45,11 @@ export async function fetchChannelPageList(form: any) {
 export async function fetchSystemConfig() {
   return requestClient.get('/gb/device/system/config');
 }
+
+export async function fetchSendBye(channelId: string) {
+  return requestClient.post(`/gb/channel/send/bye/${channelId}`);
+}
+
+export async function fetchDelChannel(channelId: any) {
+  return requestClient.delete(`/gb/channel/${channelId}`);
+}
