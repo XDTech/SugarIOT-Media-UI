@@ -15,7 +15,7 @@ import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { fetchClosePush, fetchDelPull, fetchPushList } from '#/api';
+import { fetchClosePush, fetchDeletePush, fetchPushList } from '#/api';
 import { fetchSendBye } from '#/api/core/gb';
 import dayjs, { formatDuration } from '#/utils/dayjs-util';
 import { getStreamPrefix } from '#/utils/util';
@@ -212,7 +212,7 @@ function edit(item: any) {
 async function deleteItem(id: string) {
   loading(true);
   try {
-    await fetchDelPull(id);
+    await fetchDeletePush(id);
     message.success('操作成功');
     gridApi.query();
   } finally {
@@ -245,7 +245,7 @@ async function closePlayer(item: any) {
   try {
     //  loading(true);
     await (item.app === 'rtp'
-      ? fetchSendBye(item.id)
+      ? fetchSendBye(item.relevanceId)
       : fetchClosePush(item.id));
     gridApi.query();
     message.success('操作成功');

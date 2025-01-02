@@ -26,6 +26,10 @@ export const useWebSocketStore = defineStore('websocket', () => {
     //   console.warn('WebSocket 已经连接，跳过初始化');
     //   return;
     // }
+
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    token = String(array[0]);
     const url = host + token;
     const {
       connect: c1,

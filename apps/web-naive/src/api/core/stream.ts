@@ -44,3 +44,7 @@ export async function fetchPushAddr(id: any) {
 export async function fetchClosePush(id: string) {
   return requestClient.post(`/stream/push/close/${id}`);
 }
+
+export async function fetchDeletePush(id: string) {
+  return requestClient.delete(`/stream/push/${id}`);
+}
