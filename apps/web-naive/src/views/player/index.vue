@@ -37,7 +37,6 @@ const parent = ref(null);
 const player = ref<any>();
 const item = defineModel<any>({ required: true });
 onMounted(() => {
-  console.log(item.value, '===');
   createProxy();
 });
 const currentPlayerAddr = ref();

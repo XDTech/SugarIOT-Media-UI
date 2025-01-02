@@ -199,6 +199,7 @@ async function deleteItem(id: string) {
 const [playerModal, playerModalAPI] = useVbenModal({
   // 连接抽离的组件
   footer: false,
+  draggable: true,
 });
 
 // const state = playerModalAPI.useStore();

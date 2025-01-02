@@ -48,3 +48,11 @@ export async function fetchClosePush(id: string) {
 export async function fetchDeletePush(id: string) {
   return requestClient.delete(`/stream/push/${id}`);
 }
+
+export async function fetchPushItem(id: any) {
+  return requestClient.get(`/stream/push/${id}`);
+}
+
+export async function fetchUpdatePushItem(id: any, name: string) {
+  return requestClient.put(`/stream/push/${id}?name=${name}`);
+}

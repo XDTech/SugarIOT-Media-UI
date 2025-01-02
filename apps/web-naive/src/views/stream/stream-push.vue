@@ -3,13 +3,7 @@
 import { ref } from 'vue';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import {
-  antdDelete,
-  antdDisconnect,
-  antdEdit,
-  MdiPlus,
-  MsPlay,
-} from '@vben/icons';
+import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '@vben/icons';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
@@ -21,7 +15,7 @@ import dayjs, { formatDuration } from '#/utils/dayjs-util';
 import { getStreamPrefix } from '#/utils/util';
 
 import PlayerComponent from '../player/index.vue';
-import StreamPullFormModal from './components/stream-pull-form-modal.vue';
+import StreamPushFormModal from './components/stream-push-form-modal.vue';
 
 interface RowType {
   category: string;
@@ -70,7 +64,7 @@ const gridOptions: VxeGridProps<RowType> = {
     {
       field: 'stream',
       title: '流地址',
-      width: 300,
+      width: 380,
       slots: { default: 'stream' },
     },
     {
@@ -185,7 +179,7 @@ function loading(params: boolean) {
 
 const [streamModal, streamModalAPI] = useVbenModal({
   // 连接抽离的组件
-  connectedComponent: StreamPullFormModal,
+  connectedComponent: StreamPushFormModal,
   onOpenChange: (open) => {
     if (!open) {
       // 接收子组件消息
@@ -196,12 +190,7 @@ const [streamModal, streamModalAPI] = useVbenModal({
     }
   },
 });
-function add() {
-  streamModalAPI.setState({ title: '添加拉流代理' });
 
-  streamModalAPI.setData({ operator: 'add' });
-  streamModalAPI.open();
-}
 function edit(item: any) {
   streamModalAPI.setState({ title: `编辑【${item.name}】` });
 
@@ -224,6 +213,7 @@ async function deleteItem(id: string) {
 
 const [playerModal, playerModalAPI] = useVbenModal({
   // 连接抽离的组件
+  draggable: true,
   footer: false,
 });
 
@@ -276,20 +266,7 @@ async function copyToClipboard(text: string) {
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="拉流代理列表" table-title-help="提示">
-      <template #toolbar-tools>
-        <NPopover trigger="hover">
-          <template #trigger>
-            <NButton circle @click="add">
-              <template #icon>
-                <MdiPlus />
-              </template>
-            </NButton>
-          </template>
-          添加拉流代理
-        </NPopover>
-      </template>
-
+    <Grid table-title="推流列表" table-title-help="提示">
       <template #name="{ row }">
         <NText type="info">
           {{ row.name }}
@@ -304,7 +281,11 @@ async function copyToClipboard(text: string) {
 
       <template #stream="{ row }">
         <NTag round size="small" type="info">
-          {{ row.stream.slice(tenantCodePrefix.length) }}
+          {{
+            row.app === 'rtp'
+              ? row.stream
+              : row.stream.slice(tenantCodePrefix.length)
+          }}
         </NTag>
       </template>
       <template #url="{ row }">
@@ -329,7 +310,9 @@ async function copyToClipboard(text: string) {
       </template>
       <template #aliveSecond="{ row }">
         <NTag round size="small" type="primary">
-          {{ formatDuration(dayjs.duration(row.aliveSecond, 'seconds')) }}
+          {{
+            formatDuration(dayjs.duration(row.aliveSecond, 'seconds')) || '0'
+          }}
         </NTag>
       </template>
 
