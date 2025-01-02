@@ -3,19 +3,25 @@
 import { ref } from 'vue';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdDisconnect, MsPlay } from '@vben/icons';
+import {
+  antdDelete,
+  antdDisconnect,
+  antdEdit,
+  MdiPlus,
+  MsPlay,
+} from '@vben/icons';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import {
-  fetchChannelPageList,
-  fetchDelChannel,
-  fetchSendBye,
-} from '#/api/core/gb';
+import { fetchClosePush, fetchDelPull, fetchPushList } from '#/api';
+import { fetchSendBye } from '#/api/core/gb';
+import dayjs, { formatDuration } from '#/utils/dayjs-util';
+import { getStreamPrefix } from '#/utils/util';
 
-import PlayerComponent from '../../player/index.vue';
+import PlayerComponent from '../player/index.vue';
+import StreamPullFormModal from './components/stream-pull-form-modal.vue';
 
 interface RowType {
   category: string;
@@ -25,7 +31,8 @@ interface RowType {
   productName: string;
   releaseDate: string;
 }
-
+const tenantCodePrefix = ref(getStreamPrefix());
+const types = ref();
 const formOptions: VbenFormProps = {
   // 默认展开
   collapsed: true,
@@ -48,83 +55,76 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
     {
-      title: '通道名称',
-      width: 200,
-      field: 'channelName',
+      title: '名称',
+      width: 300,
+      field: 'name',
       fixed: 'left',
       slots: { default: 'name' },
     },
-
     {
-      title: '通道ID',
+      field: 'app',
+      title: '应用名',
       width: 200,
-      slots: { default: 'channelCode' },
+      slots: { default: 'app' },
     },
     {
-      field: 'deviceName',
-      title: '设备名称',
-      width: 200,
-    },
-    {
-      field: 'deviceCode',
-      title: '设备ID',
-      width: 200,
-      slots: { default: 'deviceCode' },
-    },
-
-    {
-      title: '厂家',
-      width: 150,
-      field: 'manufacturer',
-    },
-    {
-      title: '地址',
-      width: 150,
-      field: 'address',
-    },
-    {
-      title: '类型',
-      width: 100,
-      field: 'model',
+      field: 'stream',
+      title: '流地址',
+      width: 300,
+      slots: { default: 'stream' },
     },
     {
       field: 'status',
-      title: '通道状态',
+      title: '状态',
       width: 100,
       slots: { default: 'status' },
     },
+
     {
-      field: 'playStatus',
-      title: '播放状态',
+      field: 'totalReaderCount',
+      title: '观看人数',
       width: 100,
-      slots: { default: 'playStatus' },
+    },
+    {
+      field: 'bytesSpeed',
+      title: '速度',
+      width: 150,
+    },
+    {
+      field: 'schema',
+      title: '推流方式',
+      width: 100,
+      slots: { default: 'schema' },
+    },
+    {
+      field: 'originTypeStr',
+      title: '产生源类型',
+      width: 100,
     },
 
     {
-      title: '经度',
-      width: 150,
-      field: 'lng',
+      field: 'aliveSecond',
+      title: '持续时间',
+
+      slots: { default: 'aliveSecond' },
+
+      width: 300,
     },
     {
-      title: '纬度',
-      width: 150,
-      field: 'lat',
-    },
-    {
-      title: 'PTZ类型',
-      width: 150,
-      field: 'ptzType',
-      slots: { default: 'ptzType' },
-    },
-    {
-      field: 'syncTime',
-      title: '同步时间',
+      field: 'pushAt',
+      title: '最近推流时间',
       formatter: 'formatDateTime',
       width: 300,
     },
     {
-      field: 'createdAt',
+      field: 'createAt',
       title: '创建时间',
+      formatter: 'formatDateTime',
+      width: 300,
+    },
+    {
+      field: 'updateAt',
+      title: '更新时间',
       formatter: 'formatDateTime',
       width: 300,
     },
@@ -133,7 +133,7 @@ const gridOptions: VxeGridProps<RowType> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: '操作',
-      width: 200,
+      width: 300,
     },
   ],
   height: 'auto',
@@ -154,7 +154,7 @@ const gridOptions: VxeGridProps<RowType> = {
           // if (formValues && formValues.isTrusted) {
           //   formValues = {};
           // }
-          return await fetchChannelPageList({
+          return await fetchPushList({
             pi: page.currentPage,
             ps: page.pageSize,
             ...formValues,
@@ -183,10 +183,36 @@ function loading(params: boolean) {
   gridApi.setLoading(params);
 }
 
+const [streamModal, streamModalAPI] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: StreamPullFormModal,
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+      const d = streamModalAPI.getData();
+      if (d.refresh) {
+        gridApi.reload();
+      }
+    }
+  },
+});
+function add() {
+  streamModalAPI.setState({ title: '添加拉流代理' });
+
+  streamModalAPI.setData({ operator: 'add' });
+  streamModalAPI.open();
+}
+function edit(item: any) {
+  streamModalAPI.setState({ title: `编辑【${item.name}】` });
+
+  streamModalAPI.setData({ operator: 'edit', ...item });
+  streamModalAPI.open();
+}
+
 async function deleteItem(id: string) {
   loading(true);
   try {
-    await fetchDelChannel(id);
+    await fetchDelPull(id);
     message.success('操作成功');
     gridApi.query();
   } finally {
@@ -206,7 +232,8 @@ const item = ref();
 const title = ref();
 function openPlayer(i: any) {
   item.value = i;
-  title.value = `【${i.channelName}】视频预览`;
+  title.value = `【${i.name}】视频预览`;
+  types.value = i.app;
   playerModalAPI.open();
 }
 // watch(state, (_msg) => {
@@ -214,24 +241,26 @@ function openPlayer(i: any) {
 // });
 
 async function closePlayer(item: any) {
-  // loading(true);
+  loading(true);
   try {
     //  loading(true);
-    await fetchSendBye(item.id);
+    await (item.app === 'rtp'
+      ? fetchSendBye(item.id)
+      : fetchClosePush(item.id));
     gridApi.query();
     message.success('操作成功');
   } finally {
-    // loading(false);
+    loading(false);
   }
 }
 
 // 播放成功回调，修改状态为0
-function playSuccess(id: string) {
-  const data = gridApi.grid.getData();
-  const item = data.find((item) => item.id === id);
-  if (item && item.status === '1') {
-    item.status = '0';
-  }
+function playSuccess(_id: string) {
+  // const data = gridApi.grid.getData();
+  // const item = data.find((item) => item.id === id);
+  // if (item && item.status === '1') {
+  //   item.status = '0';
+  // }
 }
 
 async function copyToClipboard(text: string) {
@@ -247,30 +276,35 @@ async function copyToClipboard(text: string) {
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="通道管理列表" table-title-help="">
-      <template #toolbar-tools> </template>
+    <Grid table-title="拉流代理列表" table-title-help="提示">
+      <template #toolbar-tools>
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NButton circle @click="add">
+              <template #icon>
+                <MdiPlus />
+              </template>
+            </NButton>
+          </template>
+          添加拉流代理
+        </NPopover>
+      </template>
 
       <template #name="{ row }">
         <NText type="info">
-          {{ row.channelName }}
+          {{ row.name }}
         </NText>
       </template>
 
-      <template #channelCode="{ row }">
+      <template #app="{ row }">
         <NTag round size="small" type="info">
-          {{ row.channelCode }}
-        </NTag>
-      </template>
-
-      <template #deviceCode="{ row }">
-        <NTag round size="small" type="info">
-          {{ row.deviceCode }}
+          {{ row.app }}
         </NTag>
       </template>
 
       <template #stream="{ row }">
         <NTag round size="small" type="info">
-          {{ row.stream }}
+          {{ row.stream.slice(tenantCodePrefix.length) }}
         </NTag>
       </template>
       <template #url="{ row }">
@@ -281,44 +315,21 @@ async function copyToClipboard(text: string) {
 
       <template #status="{ row }">
         <NTag v-if="row.status === 'online'" round size="small" type="success">
-          在线
+          正在推流
         </NTag>
         <NTag v-if="row.status === 'offline'" round size="small" type="error">
-          离线
+          暂未推流
         </NTag>
       </template>
 
-      <template #playStatus="{ row }">
-        <NTag
-          v-if="row.playStatus === 'online'"
-          round
-          size="small"
-          type="success"
-        >
-          正在播放
-        </NTag>
-        <NTag
-          v-if="row.playStatus === 'offline'"
-          round
-          size="small"
-          type="error"
-        >
-          暂未播放
+      <template #schema="{ row }">
+        <NTag round size="small" type="primary">
+          {{ row.schema }}
         </NTag>
       </template>
-
-      <template #ptzType="{ row }">
-        <NTag v-if="row.ptzType === 1" round size="small" type="info">
-          球机
-        </NTag>
-        <NTag v-if="row.ptzType === 2" round size="small" type="info">
-          半球
-        </NTag>
-        <NTag v-if="row.ptzType === 3" round size="small" type="info">
-          固定枪机
-        </NTag>
-        <NTag v-if="row.ptzType === 4" round size="small" type="info">
-          遥控枪机
+      <template #aliveSecond="{ row }">
+        <NTag round size="small" type="primary">
+          {{ formatDuration(dayjs.duration(row.aliveSecond, 'seconds')) }}
         </NTag>
       </template>
 
@@ -344,11 +355,17 @@ async function copyToClipboard(text: string) {
                   </template>
                 </NButton>
               </template>
-              确定关闭国标流吗？
+              确定关闭推流吗？
             </NPopconfirm>
           </template>
-          <span>关闭国标流</span>
+          <span>关闭推流</span>
         </NPopover>
+
+        <NButton circle quaternary type="primary" @click="edit(row)">
+          <template #icon>
+            <antdEdit />
+          </template>
+        </NButton>
 
         <NPopconfirm @positive-click="deleteItem(row.id)">
           <template #trigger>
@@ -368,7 +385,7 @@ async function copyToClipboard(text: string) {
     <playerModal :title="title" class="h-[600px] w-[800px]">
       <PlayerComponent
         v-model:model-value="item"
-        types="gb"
+        :types="types"
         @play-success="playSuccess"
       />
     </playerModal>

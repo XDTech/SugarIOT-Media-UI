@@ -30,3 +30,17 @@ export async function fetchProxyPull(id: string) {
 export async function fetchProxyAddress(id: string) {
   return requestClient.get(`/stream/pull/proxy/address/${id}`);
 }
+
+// ====推流列表
+
+export async function fetchPushList(form: any) {
+  return requestClient.get('/stream/push/page/list', { params: form });
+}
+
+export async function fetchPushAddr(id: any) {
+  return requestClient.get(`/stream/push/addr/${id}`);
+}
+
+export async function fetchClosePush(id: string) {
+  return requestClient.post(`/stream/push/close/${id}`);
+}

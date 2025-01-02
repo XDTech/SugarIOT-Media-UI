@@ -20,7 +20,7 @@ import {
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { fetchProxyAddress } from '#/api';
+import { fetchProxyAddress, fetchPushAddr } from '#/api';
 import { fetchChannelInvite } from '#/api/core/gb';
 import { copyToClipboard } from '#/utils/util';
 
@@ -47,10 +47,29 @@ const options = ref<any[]>([]);
 async function createProxy() {
   try {
     let data: any = null;
-    if (props.types === 'gb') {
-      data = await fetchChannelInvite(item.value.id);
-    } else if (props.types === 'proxy') {
-      data = await fetchProxyAddress(item.value.id);
+    console.log('props.types', props.types);
+    switch (props.types) {
+      case 'gb': {
+        data = await fetchChannelInvite(item.value.id);
+
+        break;
+      }
+      case 'live': {
+        data = await fetchPushAddr(item.value.id);
+
+        break;
+      }
+      case 'proxy': {
+        data = await fetchProxyAddress(item.value.id);
+
+        break;
+      }
+      case 'rtp': {
+        data = await fetchChannelInvite(item.value.relevanceId);
+
+        break;
+      }
+      // No default
     }
 
     if (data) {

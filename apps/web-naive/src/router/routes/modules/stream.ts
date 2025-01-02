@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'pushStream',
         path: '/stream/push',
-        component: () => import('#/views/node/zlm/index.vue'),
+        component: () => import('#/views/stream/stream-push.vue'),
       },
     ],
   },
