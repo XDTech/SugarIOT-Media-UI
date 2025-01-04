@@ -5,10 +5,19 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 
+const props = defineProps({
+  keys: {
+    type: String,
+    default: '1', // 默认值
+  },
+});
+
+const containerId = ref(`player_box${props.keys}`);
+
 const playerInfo = ref<any>();
 
 function playCreate() {
-  const container = document.querySelector('#player_box1');
+  const container = document.querySelector(`#${containerId.value}`);
   const easyplayer = new (window as any).EasyPlayerPro(container, {
     isLive: true,
     bufferTime: 0.2,
@@ -16,6 +25,7 @@ function playCreate() {
     MSE: false,
     WCS: false,
     hasAudio: true,
+    debug: false,
     // poster: '/static/zlm.png',
   });
 
@@ -25,25 +35,29 @@ function playCreate() {
   easyplayer.on('playbackRate', (rate: any) => {
     easyplayer.setRate(rate);
   });
-  easyplayer.on('error', (_err: any) => {});
+  easyplayer.on('error', (_err: any) => {
+    console.error('error', _err);
+  });
 
   easyplayer.on('playbackSeek', (data: any) => {
     console.log('playbackSeek', data);
   });
   easyplayer.on('contextmenuClose', async () => {
+    console.error('contextmenuClose');
     await destory();
   });
   playerInfo.value = easyplayer;
 }
+
 onMounted(() => {
   playCreate();
-  console.log(playerInfo);
 });
 onUnmounted(async () => {
   await destory();
 });
 
 async function destory() {
+  console.log(playerInfo.value);
   if (playerInfo.value) {
     await playerInfo.value.destroy();
     playerInfo.value = null;
@@ -57,20 +71,24 @@ async function replay(url: string) {
   playCreate();
   await playerInfo.value?.play(url);
 }
+
 defineExpose({
   play,
   replay,
+  destory,
+  playCreate,
 });
 </script>
 
 <template>
-  <div id="player_box1" class="player-box"></div>
+  <div :id="containerId" class="player-box">
+    <slot name="title"></slot>
+  </div>
 </template>
 
 <style scoped>
 .player-box {
-  inset: 0;
-  z-index: 9000;
+  z-index: 1000;
   background-color: black;
 }
 </style>

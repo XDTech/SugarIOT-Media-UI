@@ -131,7 +131,6 @@ watch(
 );
 
 function procressSocketMsg(data: SocketMsgBean) {
-  console.warn(data);
   switch (data.types) {
     case SocketMsgEnum.gbOffline: {
       notification.error({
@@ -183,7 +182,6 @@ watch(latestMessage, (msg: MessageEvent) => {
   if (info) {
     const data: SocketMsgBean = JSON.parse(info);
 
-    console.error(data);
     procressSocketMsg(data);
   }
 });

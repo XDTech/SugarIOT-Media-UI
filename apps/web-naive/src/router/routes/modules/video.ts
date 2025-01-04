@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'screen',
         path: '/video/screen',
-        component: () => import('#/views/node/zlm/index.vue'),
+        component: () => import('#/views/video-screen/index.vue'),
       },
     ],
   },

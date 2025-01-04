@@ -48,6 +48,7 @@
     "naive-ui": "catalog:",
     "pinia": "catalog:",
     "relativeTime": "link:dayjs/plugin/relativeTime",
+    "screenfull": "^6.0.2",
     "vue": "catalog:",
     "vue-hooks-plus": "^2.2.1",
     "vue-json-pretty": "^2.4.0",
