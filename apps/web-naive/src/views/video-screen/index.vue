@@ -9,6 +9,7 @@ import {
   NGridItem,
   NIcon,
   NInput,
+  NInputGroup,
   NLayout,
   NLayoutSider,
   NPopover,
@@ -203,9 +204,16 @@ const toggleFullScreen = () => {
         content-style="padding: 24px;"
         show-trigger="arrow-circle"
       >
-        <NSpace :size="12" vertical>
-          <NInput v-model:value="pattern" placeholder="搜索" />
-
+        <NSpace vertical>
+          <NInputGroup>
+            <NInput v-model:value="pattern" placeholder="搜索" />
+            <NButton @click="getScreen">
+              <template #icon>
+                <span class="icon-[ant-design--reload-outlined]"> </span>
+              </template>
+              刷新
+            </NButton>
+          </NInputGroup>
           <NTree
             :data="data"
             :node-props="nodeProps"
