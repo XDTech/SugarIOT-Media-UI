@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 import { requestClient } from '#/api/request';
 
 export async function fetchDeviceList(form: any) {
@@ -52,4 +54,16 @@ export async function fetchSendBye(channelId: string) {
 
 export async function fetchDelChannel(channelId: any) {
   return requestClient.delete(`/gb/channel/${channelId}`);
+}
+
+export async function fetchPtz(
+  deviceCode: any,
+  channelCode: any,
+  directions: any,
+  speed: any,
+) {
+  const param = qs.stringify({ directions }, { arrayFormat: 'repeat' });
+  return requestClient.get(
+    `/gb/channel/ptz/${deviceCode}/${channelCode}/${speed}?${param}`,
+  );
 }

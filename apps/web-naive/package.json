@@ -26,6 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@types/qs": "^6.9.17",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
@@ -47,6 +48,7 @@
     "moment": "^2.30.1",
     "naive-ui": "catalog:",
     "pinia": "catalog:",
+    "qs": "^6.13.1",
     "relativeTime": "link:dayjs/plugin/relativeTime",
     "screenfull": "^6.0.2",
     "vue": "catalog:",

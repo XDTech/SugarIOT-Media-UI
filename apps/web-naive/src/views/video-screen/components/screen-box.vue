@@ -12,12 +12,12 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['itemCallback']);
 const player = ref<any>();
 const playUrl = ref<any>();
 const itemInfo = ref<any>();
 const playerFlag = ref<any>(false);
 const playerTitleShow = ref<any>(false);
-
 onMounted(() => {
   // player.value.play(
   //   'http://192.168.31.208:80/rtp/10000100001111111111_10000100001320000008.live.flv?sign=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MzU5ODM5MzYsInR5cGUiOiJnYiJ9.6lev7dGrtKJ1yizmhwxFGQABxuP7b92vh0RctN1LSsg',
@@ -54,6 +54,12 @@ function close() {
   playerFlag.value = false;
   player.value?.destory();
 }
+
+function boxClick() {
+  if (playerFlag.value) {
+    emit('itemCallback', itemInfo.value);
+  }
+}
 </script>
 
 <template>
@@ -63,6 +69,7 @@ function close() {
       ref="player"
       :keys="props.keys"
       style="height: 100%"
+      @click="boxClick"
     >
       <template #title>
         <NFlex

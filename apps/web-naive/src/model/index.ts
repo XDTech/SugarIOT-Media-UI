@@ -13,3 +13,13 @@ export interface SocketMsgBean {
   msg: string;
   data: any;
 }
+
+export enum PTZEnum {
+  panLeft = 'panLeft',
+  panRight = 'panRight',
+  stop = 'stop',
+  tiltDown = 'tiltDown',
+  tiltUp = 'tiltUp',
+  zoomIn = 'zoomIn',
+  zoomOut = 'zoomOut',
+}

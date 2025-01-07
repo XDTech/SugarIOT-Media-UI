@@ -23,7 +23,7 @@ function playCreate() {
     bufferTime: 0.2,
     stretch: false,
     MSE: false,
-    WCS: false,
+    WCS: true,
     hasAudio: true,
     debug: false,
     // poster: '/static/zlm.png',
@@ -31,6 +31,10 @@ function playCreate() {
 
   easyplayer.on('fullscreen', (flag: any) => {
     console.log('is fullscreen', flag);
+  });
+
+  easyplayer.on('decodeHevc', (flag: any) => {
+    console.log('is decodeHevc', flag);
   });
   easyplayer.on('playbackRate', (rate: any) => {
     easyplayer.setRate(rate);

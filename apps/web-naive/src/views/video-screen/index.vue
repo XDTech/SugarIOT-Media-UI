@@ -4,6 +4,8 @@ import { h, ref } from 'vue';
 import {
   NBadge,
   NButton,
+  NCollapse,
+  NCollapseItem,
   NFlex,
   NGrid,
   NGridItem,
@@ -22,6 +24,7 @@ import screenfull from 'screenfull';
 import { message } from '#/adapter/naive';
 import { fetchProxyAddress, fetchPushAddr, getScreenList } from '#/api';
 import { fetchChannelInvite } from '#/api/core/gb';
+import ptz from '#/views/ptz/index.vue';
 
 import screenBox from './components/screen-box.vue';
 
@@ -36,7 +39,8 @@ const layout = ref({
 const mapCon = ref(new Map());
 const selectedItem = ref();
 const gridRef = ref(null); // 用于获取 NGrid 组件的 DOM
-
+const currItem = ref();
+const ptzRef = ref();
 const onlineIcon = h(
   NBadge,
   {
@@ -177,12 +181,15 @@ function playBox(url: string, item: any) {
     message.error('请选择播放屏幕');
     return;
   }
+
   const box = mapCon.value.get(`${boxPrefix}${selectedItem.value}`);
   if (box) {
     // box.replay(
     //   'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/hls/xgplayer-demo.m3u8',
     // );
+    currItem.value = item;
     box.receiveItem(item);
+    ptzRef.value.receiveItem(item);
     box.replay(url);
   }
 }
@@ -193,6 +200,11 @@ const toggleFullScreen = () => {
     screenfull.toggle(grid); // 使用 screenfull 来切换全屏
   }
 };
+
+function itemCallback(item: any) {
+  currItem.value = item;
+  ptzRef.value.receiveItem(item);
+}
 </script>
 <template>
   <div class="screen-container">
@@ -205,23 +217,30 @@ const toggleFullScreen = () => {
         show-trigger="arrow-circle"
       >
         <NSpace vertical>
-          <NInputGroup>
-            <NInput v-model:value="pattern" placeholder="搜索" />
-            <NButton @click="getScreen">
-              <template #icon>
-                <span class="icon-[ant-design--reload-outlined]"> </span>
-              </template>
-              刷新
-            </NButton>
-          </NInputGroup>
-          <NTree
-            :data="data"
-            :node-props="nodeProps"
-            :pattern="pattern"
-            :show-irrelevant-nodes="showIrrelevantNodes"
-            block-line
-            show-line
-          />
+          <NCollapse :default-expanded-names="['2', '1']">
+            <NCollapseItem name="1" title="媒体列表">
+              <NInputGroup>
+                <NInput v-model:value="pattern" placeholder="搜索" />
+                <NButton @click="getScreen">
+                  <template #icon>
+                    <span class="icon-[ant-design--reload-outlined]"> </span>
+                  </template>
+                  刷新
+                </NButton>
+              </NInputGroup>
+              <NTree
+                :data="data"
+                :node-props="nodeProps"
+                :pattern="pattern"
+                :show-irrelevant-nodes="showIrrelevantNodes"
+                block-line
+                show-line
+              />
+            </NCollapseItem>
+            <NCollapseItem name="2" title="云台控制">
+              <ptz ref="ptzRef" />
+            </NCollapseItem>
+          </NCollapse>
         </NSpace>
       </NLayoutSider>
 
@@ -241,6 +260,7 @@ const toggleFullScreen = () => {
                 :ref="setBoxRef(index)"
                 :keys="`screen_${index}`"
                 class="screen-box"
+                @item-callback="itemCallback"
               />
             </NGridItem>
           </NGrid>
