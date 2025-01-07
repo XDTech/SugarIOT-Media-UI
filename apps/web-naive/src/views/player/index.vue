@@ -23,6 +23,7 @@ import { message } from '#/adapter/naive';
 import { fetchProxyAddress, fetchPushAddr } from '#/api';
 import { fetchChannelInvite } from '#/api/core/gb';
 import { copyToClipboard } from '#/utils/util';
+import ptz from '#/views/ptz/index.vue';
 
 import easyPlayer from './components/easy-player.vue';
 
@@ -34,11 +35,15 @@ const props = defineProps({
 });
 const emit = defineEmits(['playSuccess']);
 const parent = ref(null);
+const ptzControl = ref();
 const player = ref<any>();
 const item = defineModel<any>({ required: true });
 onMounted(() => {
   createProxy();
 });
+function receiveItem() {
+  ptzControl.value?.receiveItem(item.value);
+}
 const currentPlayerAddr = ref();
 const searchPlayerAddr = ref();
 const options = ref<any[]>([]);
@@ -155,7 +160,9 @@ function play() {
           </NPopover>
         </NInputGroup>
       </NTabPane>
-      <NTabPane name="ptz" tab="远程控制"> Hey Jude </NTabPane>
+      <NTabPane name="ptz" tab="远程控制">
+        <ptz ref="ptzControl" :item="item" layout="center" />
+      </NTabPane>
       <NTabPane name="info" tab="流信息"> 流信息 </NTabPane>
       <NTabPane name="voice" tab="语音对讲"> 七里香 </NTabPane>
     </NTabs>

@@ -14,7 +14,16 @@ import { message } from '#/adapter/naive';
 import { fetchPtz } from '#/api/core/gb';
 import { PTZEnum } from '#/model/index';
 
+const { layout = 'vertical', item } = defineProps<{
+  item?: object; // 是否必传
+  layout?: string; // 是否必传
+}>();
+
 const itemInfo = ref<any>();
+
+itemInfo.value = item;
+
+console.log(itemInfo.value);
 const speed = ref(150);
 async function ptzControl(ptzArr: any) {
   if (!itemInfo.value) return;
@@ -36,6 +45,7 @@ async function ptzControl(ptzArr: any) {
 }
 const formatTooltip = (value: number) => `速度:${value}`;
 function receiveItem(item: any) {
+  console.log('item', item);
   itemInfo.value = item;
 }
 
@@ -46,8 +56,8 @@ defineExpose({
 
 <template>
   <div>
-    <NGrid :cols="3">
-      <NGridItem :span="2">
+    <NGrid :cols="layout === 'vertical' ? 3 : 4">
+      <NGridItem :span="layout === 'vertical' ? 2 : 1">
         <div>
           <NButton
             circle
@@ -189,9 +199,28 @@ defineExpose({
           </NButton>
         </NButtonGroup>
       </NGridItem>
+
+      <NGridItem v-show="layout === 'center'" vertical>
+        <n-space vertical>
+          <NSlider
+            v-model:value="speed"
+            :format-tooltip="formatTooltip"
+            :max="255"
+            :step="10"
+          />
+          <NInputNumber
+            v-model:value="speed"
+            max="255"
+            min="0"
+            size="small"
+            step="5"
+            style="margin-top: 5px"
+          />
+        </n-space>
+      </NGridItem>
     </NGrid>
 
-    <n-space vertical>
+    <n-space v-show="layout === 'vertical'" vertical>
       <NSlider
         v-model:value="speed"
         :format-tooltip="formatTooltip"
