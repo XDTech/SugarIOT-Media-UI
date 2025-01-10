@@ -56,6 +56,16 @@ export async function fetchDelChannel(channelId: any) {
   return requestClient.delete(`/gb/channel/${channelId}`);
 }
 
+export async function fetchChannel(channelId: any) {
+  return requestClient.get(`/gb/channel/${channelId}`);
+}
+
+export async function fetchUpdateChannel(channel: any) {
+  return requestClient.put(`/gb/channel`, null, {
+    params: channel,
+  });
+}
+
 export async function fetchPtz(
   deviceCode: any,
   channelCode: any,

@@ -23,7 +23,6 @@ const itemInfo = ref<any>();
 
 itemInfo.value = item;
 
-console.log(itemInfo.value);
 const speed = ref(150);
 async function ptzControl(ptzArr: any) {
   if (!itemInfo.value) return;
@@ -45,7 +44,6 @@ async function ptzControl(ptzArr: any) {
 }
 const formatTooltip = (value: number) => `速度:${value}`;
 function receiveItem(item: any) {
-  console.log('item', item);
   itemInfo.value = item;
 }
 

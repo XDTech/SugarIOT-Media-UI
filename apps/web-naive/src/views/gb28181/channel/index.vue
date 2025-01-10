@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdDisconnect, MsPlay } from '@vben/icons';
+import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '@vben/icons';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
@@ -16,6 +16,7 @@ import {
 } from '#/api/core/gb';
 
 import PlayerComponent from '../../player/index.vue';
+import ChannelFormModal from '../components/channel-form-modal.vue';
 
 interface RowType {
   category: string;
@@ -98,6 +99,31 @@ const gridOptions: VxeGridProps<RowType> = {
       title: '播放状态',
       width: 100,
       slots: { default: 'playStatus' },
+    },
+    {
+      field: 'enablePull',
+      title: '自动拉流',
+      width: 200,
+      slots: { default: 'enablePull' },
+      titlePrefix: {
+        content: '设备注册后是否自动拉流',
+      },
+    },
+    {
+      field: 'enableMp4',
+      title: 'MP4录制',
+      width: 200,
+      slots: { default: 'enableMp4' },
+    },
+
+    {
+      field: 'autoClose',
+      title: '无人观看',
+      width: 200,
+      slots: { default: 'autoClose' },
+      titlePrefix: {
+        content: '无人观看时候的处理',
+      },
     },
 
     {
@@ -202,6 +228,21 @@ const [playerModal, playerModalAPI] = useVbenModal({
   draggable: true,
 });
 
+const operator = ref('edit');
+
+const [regModal, modalApi] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: ChannelFormModal,
+  onOpenChange: (open) => {
+    if (!open) {
+      // 接收子组件消息
+      const d = modalApi.getData();
+      if (d.refresh) {
+        gridApi.query();
+      }
+    }
+  },
+});
 // const state = playerModalAPI.useStore();
 const item = ref();
 const title = ref();
@@ -243,6 +284,17 @@ async function copyToClipboard(text: string) {
   } catch {
     message.success('复制失败');
   }
+}
+
+function openRegister(id: any) {
+  operator.value = 'edit';
+
+  modalApi.setState({ title: '编辑配置' });
+  modalApi.setData({
+    operator: operator.value,
+    id,
+  });
+  modalApi.open();
 }
 </script>
 
@@ -307,6 +359,39 @@ async function copyToClipboard(text: string) {
           暂未播放
         </NTag>
       </template>
+      <template #enableMp4="{ row }">
+        <NTag v-if="row.enableMp4" round size="small" type="success">
+          开启
+        </NTag>
+        <NTag v-if="!row.enableMp4" round size="small" type="error">
+          关闭
+        </NTag>
+      </template>
+      <template #enablePull="{ row }">
+        <NTag v-if="row.enablePull" round size="small" type="success">
+          开启
+        </NTag>
+        <NTag v-if="!row.enablePull" round size="small" type="error">
+          关闭
+        </NTag>
+      </template>
+
+      <template #autoClose="{ row }">
+        <!-- <NTag v-if="row.autoClose === 'yes'" round size="small" type="success">
+          是
+        </NTag> -->
+        <NTag v-if="row.autoClose === 'no'" round size="small" type="error">
+          关闭推流
+        </NTag>
+        <NTag
+          v-if="row.autoClose === 'ignore'"
+          round
+          size="small"
+          type="primary"
+        >
+          保持开启
+        </NTag>
+      </template>
 
       <template #ptzType="{ row }">
         <NTag v-if="row.ptzType === 1" round size="small" type="info">
@@ -351,6 +436,21 @@ async function copyToClipboard(text: string) {
           <span>关闭国标流</span>
         </NPopover>
 
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NButton
+              circle
+              quaternary
+              type="primary"
+              @click="openRegister(row.id)"
+            >
+              <template #icon>
+                <antdEdit />
+              </template>
+            </NButton>
+          </template>
+          <span>编辑</span>
+        </NPopover>
         <NPopconfirm @positive-click="deleteItem(row.id)">
           <template #trigger>
             <NButton circle quaternary type="error">
@@ -373,5 +473,7 @@ async function copyToClipboard(text: string) {
         @play-success="playSuccess"
       />
     </playerModal>
+
+    <regModal />
   </Page>
 </template>

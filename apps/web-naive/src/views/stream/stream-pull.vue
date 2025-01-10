@@ -133,7 +133,7 @@ const gridOptions: VxeGridProps<RowType> = {
       width: 200,
       slots: { default: 'autoClose' },
       titlePrefix: {
-        content: '无人观看是否自动关闭流(不触发无人观看hook)，`忽略`则不关闭流',
+        content: '无人观看时候的处理',
       },
     },
 
@@ -368,11 +368,11 @@ async function copyToClipboard(text: string) {
         </NTag>
       </template>
       <template #autoClose="{ row }">
-        <NTag v-if="row.autoClose === 'yes'" round size="small" type="success">
+        <!-- <NTag v-if="row.autoClose === 'yes'" round size="small" type="success">
           是
-        </NTag>
+        </NTag> -->
         <NTag v-if="row.autoClose === 'no'" round size="small" type="error">
-          否
+          关闭拉流
         </NTag>
         <NTag
           v-if="row.autoClose === 'ignore'"
@@ -380,7 +380,7 @@ async function copyToClipboard(text: string) {
           size="small"
           type="primary"
         >
-          忽略
+          保持开启
         </NTag>
       </template>
       <template #playerType="{ row }">

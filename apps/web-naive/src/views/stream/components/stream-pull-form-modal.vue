@@ -125,22 +125,18 @@ const [Form, formApi] = useVbenForm({
       fieldName: 'autoClose',
       label: '无人观看',
       defaultValue: 'ignore',
-      help: '无人观看是否自动关闭流(不触发无人观看hook)，选择`忽略`则不关闭流',
+      help: '无人观看时候的处理',
       componentProps: {
         allowClear: true,
         class: 'w-full',
         filterOption: true,
         options: [
           {
-            label: '忽略',
+            label: '保持开启',
             value: 'ignore',
           },
           {
-            label: '是',
-            value: 'yes',
-          },
-          {
-            label: '否',
+            label: '关闭拉流',
             value: 'no',
           },
         ],

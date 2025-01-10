@@ -2,18 +2,14 @@
 import { ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
-import { useVbenModal, z } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 
 import { NButton, NSpace } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import {
-  fetchCreateDevice,
-  fetchDeviceInfo,
-  fetchUpdateDevice,
-} from '#/api/core/gb';
+import { fetchChannel, fetchUpdateChannel } from '#/api/core/gb';
 
 const userStore = useUserStore();
 
@@ -42,82 +38,22 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'Input',
-      fieldName: 'name',
-      label: '设备名称',
+      fieldName: 'channelName',
+      label: '通道名称',
       componentProps: {
-        placeholder: '请输入设备名称',
+        placeholder: '请输入通道名称',
+        disabled: true,
       },
-      help: '设备名称',
+      help: '通道名称',
       rules: 'required',
     },
 
-    {
-      component: 'Input',
-      fieldName: 'deviceId',
-      label: '国标ID',
-
-      componentProps: {
-        placeholder: '请输入7位流水号',
-      },
-      rules: z
-        .string()
-        .min(1, { message: '请输入7位流水号' })
-        .refine(
-          (value) => {
-            // 检查输入是否是7位数字且大于0
-            const regex = /^\d{7}$/;
-            if (!regex.test(value)) {
-              return false;
-            }
-
-            return true;
-          },
-          {
-            message: '请输入7位流水号',
-          },
-        ),
-      help: '国标唯一ID，格式为7位',
-      renderComponentContent: () => ({
-        prefix: () => `${tenantCode.value}`,
-      }),
-    },
-
-    {
-      component: 'Select',
-      fieldName: 'deviceType',
-      label: '设备类型',
-      componentProps: {
-        placeholder: '请选择设备类型',
-        options: [
-          {
-            label: 'NVR',
-            value: 'nvr',
-          },
-          {
-            label: 'IP Camera',
-            value: 'ip_camera',
-          },
-        ],
-      },
-      help: '设备类型',
-
-      rules: 'selectRequired',
-    },
-    {
-      component: 'Input',
-      fieldName: 'pwd',
-      label: '密码',
-      componentProps: {
-        placeholder: '请输入密码',
-      },
-      help: '密码为空使用系统密码校验',
-    },
     {
       component: 'Select',
       fieldName: 'autoClose',
       label: '无人观看',
       defaultValue: 'no',
-      help: '所有通道无人观看时的处理，后续可对通道进行单独配置',
+      help: '所有通道无人观看时的处理，后续可对通道进行单独配置，如果正在推流则下次推流后生效',
       componentProps: {
         allowClear: true,
         class: 'w-full',
@@ -144,7 +80,7 @@ const [Form, formApi] = useVbenForm({
         class: 'w-auto',
       },
       fieldName: 'enableMp4',
-      help: '所有通道推流后自动录制，后续可对通道进行单独配置',
+      help: '所有通道推流后自动录制，后续可对通道进行单独配置，如果正在推流则下次推流后生效',
       label: 'MP4录制',
       rules: 'selectRequired',
     },
@@ -155,7 +91,7 @@ const [Form, formApi] = useVbenForm({
         class: 'w-auto',
       },
       fieldName: 'enablePull',
-      help: '所有通道注册后自动拉流，后续可对通道进行单独配置',
+      help: '所有通道注册后自动拉流，后续可对通道进行单独配置，如果正在推流则下次推流后生效',
       label: '自动拉流',
       rules: 'selectRequired',
     },
@@ -170,7 +106,7 @@ const [Modal, modalApi] = useVbenModal({
 
       let f: any = {};
       if (d.operator === 'edit') {
-        f = await fetchDeviceInfo(d.id);
+        f = await fetchChannel(d.id);
         f.deviceId = f.deviceId.slice(tenantCode.value.length);
       }
 
@@ -186,10 +122,10 @@ async function handleSubmit() {
   const { valid } = await formApi.validate();
   if (!valid) return;
   setTrue();
-  const d = modalApi.getData<Record<string, any>>();
+  // const d = modalApi.getData<Record<string, any>>();
   try {
     const f = await formApi.getValues();
-    await (d.operator === 'edit' ? fetchUpdateDevice(f) : fetchCreateDevice(f));
+    await fetchUpdateChannel(f);
     message.success('操作成功');
     modalApi.setData({ refresh: true });
     closeDrawer();
@@ -200,7 +136,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <Modal class="h-[520px] w-[650px]">
+  <Modal class="h-[350px] w-[500px]">
     <Form />
 
     <template #footer>
