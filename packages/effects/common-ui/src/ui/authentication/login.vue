@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
 import type { VbenFormSchema } from '@vben-core/form-ui';
@@ -5,14 +6,12 @@ import type { VbenFormSchema } from '@vben-core/form-ui';
 import type { AuthenticationProps } from './types';
 
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import { $t } from '@vben/locales';
 import { useVbenForm } from '@vben-core/form-ui';
 import { VbenButton, VbenCheckbox } from '@vben-core/shadcn-ui';
 
 import Title from './auth-title.vue';
-import ThirdPartyLogin from './third-party-login.vue';
 
 interface Props extends AuthenticationProps {
   formSchema: VbenFormSchema[];
@@ -54,7 +53,7 @@ const [Form, formApi] = useVbenForm(
     showDefaultActions: false,
   }),
 );
-const router = useRouter();
+// const router = useRouter();
 
 const REMEMBER_ME_KEY = `REMEMBER_ME_USERNAME_${location.hostname}`;
 
@@ -74,9 +73,9 @@ async function handleSubmit() {
   }
 }
 
-function handleGo(path: string) {
-  router.push(path);
-}
+// function handleGo(path: string) {
+//   router.push(path);
+// }
 
 onMounted(() => {
   if (localUsername) {
@@ -108,10 +107,7 @@ defineExpose({
 
     <Form />
 
-    <div
-      v-if="showRememberMe || showForgetPassword"
-      class="mb-6 flex justify-between"
-    >
+    <div v-if="showRememberMe" class="mb-6 flex justify-between">
       <div class="flex-center">
         <VbenCheckbox
           v-if="showRememberMe"
@@ -122,13 +118,13 @@ defineExpose({
         </VbenCheckbox>
       </div>
 
-      <span
+      <!-- <span
         v-if="showForgetPassword"
         class="vben-link text-sm font-normal"
         @click="handleGo(forgetPasswordPath)"
       >
         {{ $t('authentication.forgetPassword') }}
-      </span>
+      </span> -->
     </div>
     <VbenButton
       :class="{
@@ -142,7 +138,7 @@ defineExpose({
       {{ submitButtonText || $t('common.login') }}
     </VbenButton>
 
-    <div
+    <!-- <div
       v-if="showCodeLogin || showQrcodeLogin"
       class="mb-2 mt-4 flex items-center justify-between"
     >
@@ -162,10 +158,10 @@ defineExpose({
       >
         {{ $t('authentication.qrcodeLogin') }}
       </VbenButton>
-    </div>
+    </div> -->
 
     <!-- 第三方登录 -->
-    <slot name="third-party-login">
+    <!-- <slot name="third-party-login">
       <ThirdPartyLogin v-if="showThirdPartyLogin" />
     </slot>
 
@@ -179,6 +175,6 @@ defineExpose({
           {{ $t('authentication.createAccount') }}
         </span>
       </div>
-    </slot>
+    </slot> -->
   </div>
 </template>
