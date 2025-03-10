@@ -16,7 +16,7 @@ import {
   MdiRefresh,
   MdiRestart,
   MdiWebSync,
-} from '@vben/icons';
+} from '#/icons/index';
 
 import {
   NBadge,

@@ -7,7 +7,7 @@ import {
   MdiPlus,
   userEdit,
   userPwd,
-} from '@vben/icons';
+} from '#/icons/index';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 

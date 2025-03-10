@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '@vben/icons';
+import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 

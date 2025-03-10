@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 
-import { Mscopy, MsPlay } from '@vben/icons';
+import { Mscopy, MsPlay } from '#/icons/index';
 
 import {
   NButton,

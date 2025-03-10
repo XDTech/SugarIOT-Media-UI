@@ -6,7 +6,7 @@ import { h, ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { useVbenModal } from '@vben/common-ui';
-import { MsFolder, MsFolderExpand } from '@vben/icons';
+import { MsFolder, MsFolderExpand } from '#/icons/index';
 
 import {
   NButton,

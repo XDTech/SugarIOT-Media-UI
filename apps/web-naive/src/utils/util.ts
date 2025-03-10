@@ -1,9 +1,10 @@
 import { h } from 'vue';
 
-import { ShieldIcon } from '@vben/icons';
 import { useUserStore } from '@vben/stores';
 
 import { NIcon, NText } from 'naive-ui';
+
+import { ShieldIcon } from '#/icons/index';
 
 export function listToTree(list: any) {
   // 创建一个 Map 来保存所有的节点，以便按 id 查找

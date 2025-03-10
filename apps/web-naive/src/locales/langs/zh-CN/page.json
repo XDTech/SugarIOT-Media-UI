@@ -4,7 +4,9 @@
     "register": "注册",
     "codeLogin": "验证码登录",
     "qrcodeLogin": "二维码登录",
-    "forgetPassword": "忘记密码"
+    "forgetPassword": "忘记密码",
+    "pageTitle": "企业流媒体智控平台",
+    "pageDesc": "集成监控，高效管理，安全无忧。"
   },
   "dashboard": {
     "title": "概览",

@@ -4,7 +4,7 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdEdit, MdiPlus } from '@vben/icons';
+import { antdDelete, antdEdit, MdiPlus } from '#/icons/index';
 
 import { NButton, NPopconfirm, NTag, NText } from 'naive-ui';
 

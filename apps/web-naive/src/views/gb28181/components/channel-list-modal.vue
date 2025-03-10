@@ -4,7 +4,7 @@
 import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
-import { MsPlay } from '@vben/icons';
+import { MsPlay } from '#/icons/index';
 
 import { NButton, NPopover, NTag } from 'naive-ui';
 

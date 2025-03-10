@@ -11,7 +11,7 @@ import {
   MdiPlus,
   MdiRefresh,
   MdiRestart,
-} from '@vben/icons';
+} from '#/icons/index';
 
 import moment from 'moment';
 import {
