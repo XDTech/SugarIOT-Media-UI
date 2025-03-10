@@ -1,12 +1,9 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { SvgZlmLogoIcon } from '@vben/icons';
-
-import { BasicLayout } from '#/layouts';
+import { SvgZlmLogoIcon } from '#/icons';
 
 const routes: RouteRecordRaw[] = [
   {
-    component: BasicLayout,
     meta: {
       icon: 'icon-park:triangle-round-rectangle',
       keepAlive: true,

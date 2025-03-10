@@ -1,5 +1,6 @@
-import type { MenuRecordRaw } from '@vben-core/typings';
 import type { RouteRecordRaw } from 'vue-router';
+
+import type { MenuRecordRaw } from '@vben-core/typings';
 
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
@@ -22,8 +23,8 @@ interface AccessState {
    * 登录 accessToken
    */
   accessToken: AccessToken;
-
   accessTokenName: string;
+
   /**
    * 是否已经检查过权限
    */
@@ -36,6 +37,7 @@ interface AccessState {
    * 登录 accessToken
    */
   refreshToken: AccessToken;
+  secret: any;
 }
 
 /**
@@ -86,6 +88,9 @@ export const useAccessStore = defineStore('core-access', {
     setRefreshToken(token: AccessToken) {
       this.refreshToken = token;
     },
+    setSecret(token: any) {
+      this.secret = token;
+    },
   },
   persist: {
     // 持久化
@@ -100,6 +105,7 @@ export const useAccessStore = defineStore('core-access', {
     isAccessChecked: false,
     loginExpired: false,
     refreshToken: null,
+    secret: null,
   }),
 });
 

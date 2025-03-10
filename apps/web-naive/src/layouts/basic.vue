@@ -2,6 +2,8 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
+import type { SocketMsgBean } from '../model/index';
+
 import { computed, ref, watch } from 'vue';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
@@ -16,7 +18,7 @@ import { notification } from '#/adapter/naive';
 import { useAuthStore, useWebSocketStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
-import { type SocketMsgBean, SocketMsgEnum } from '../model/index';
+import { SocketMsgEnum } from '../model/index';
 
 const notifications = ref<NotificationItem[]>([
   // {

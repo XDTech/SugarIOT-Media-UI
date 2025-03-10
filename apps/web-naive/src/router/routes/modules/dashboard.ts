@@ -1,21 +1,19 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { BasicLayout } from '#/layouts';
 import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
   {
-    component: BasicLayout,
     meta: {
       icon: 'lucide:layout-dashboard',
       order: -1,
       title: $t('page.dashboard.title'),
     },
     name: 'Dashboard',
-    path: '/',
+    path: '/dashboard',
     children: [
       {
-        name: 'Analytics',
+        name: 'Analytics1',
         path: '/analytics',
         component: () => import('#/views/monitor/info.vue'),
         // component: () => import('#/views/dashboard/analytics/index.vue'),

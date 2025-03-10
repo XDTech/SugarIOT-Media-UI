@@ -10,8 +10,6 @@ import { $t } from '@vben/locales';
 
 setupVbenForm<ComponentType>({
   config: {
-    // naive-ui组件不接受onChang事件，所以需要禁用
-    disabledOnChangeListener: true,
     // naive-ui组件的空值为null,不能是undefined，否则重置表单时不生效
     emptyStateValue: null,
     baseModelPropName: 'value',
@@ -19,7 +17,6 @@ setupVbenForm<ComponentType>({
       Checkbox: 'checked',
       Radio: 'checked',
       Upload: 'fileList',
-      Switch: 'value',
     },
   },
   defineRules: {
@@ -29,31 +26,10 @@ setupVbenForm<ComponentType>({
       }
       return true;
     },
-    numberLengthRequired: (value, _params, ctx) => {
-      console.warn(value, _params, ctx);
-      if (value === undefined || value === null) {
-        return $t('ui.formRules.required', [ctx.label]);
-      }
-
-      if (String(value).length !== 7) {
-        return `请输入7位流水号`;
-      }
-
-      return true;
-    },
     selectRequired: (value, _params, ctx) => {
       if (value === undefined || value === null) {
         return $t('ui.formRules.selectRequired', [ctx.label]);
       }
-      return true;
-    },
-    numberRequired: (value, _params, ctx) => {
-      if (value === undefined || value === null) {
-        return $t('ui.formRules.required', [ctx.label]);
-      }
-      const positiveIntegerRegex = /^[1-9]\d*$/;
-      const f = positiveIntegerRegex.test(value);
-      if (!f) return `${ctx.label}请输入正确的数字`;
       return true;
     },
   },

@@ -30,3 +30,5 @@ export const userEdit = createIconifyIcon(
 export const antdDisconnect = createIconifyIcon(
   'ant-design:disconnect-outlined',
 );
+
+export const SvgZlmLogoIcon = createIconifyIcon('zlm');

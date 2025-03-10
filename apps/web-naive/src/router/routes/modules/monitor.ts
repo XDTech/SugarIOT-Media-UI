@@ -1,10 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { BasicLayout } from '#/layouts';
-
 const routes: RouteRecordRaw[] = [
   {
-    component: BasicLayout,
     meta: {
       icon: 'tdesign:system-setting',
       order: 2,

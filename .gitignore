@@ -19,7 +19,6 @@ coverage
 dev-dist
 .stylelintcache
 yarn.lock
-pnpm.lock.yaml
 package-lock.json
 .VSCodeCounter
 **/backend-mock/data
@@ -50,4 +49,3 @@ vite.config.ts.*
 *.sln
 *.sw?
 .history
-pnpm-lock.yaml

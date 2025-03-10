@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import type { GlobalThemeOverrides } from 'naive-ui';
 
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 
 import { useNaiveDesignTokens } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
-import { useAccessStore } from '@vben/stores';
 
 import {
   darkTheme,
@@ -18,8 +17,6 @@ import {
   NNotificationProvider,
   zhCN,
 } from 'naive-ui';
-
-import { useWebSocketStore } from './store';
 
 defineOptions({ name: 'App' });
 
@@ -39,18 +36,6 @@ const themeOverrides = computed((): GlobalThemeOverrides => {
   return {
     common: commonTokens,
   };
-});
-
-onMounted(() => {
-  // 初始化ws
-  // TODO:登陆成功链接ws
-  const accessStore = useAccessStore();
-
-  if (accessStore.accessToken) {
-    const { initwebsocket } = useWebSocketStore();
-
-    initwebsocket(accessStore.accessToken);
-  }
 });
 </script>
 
