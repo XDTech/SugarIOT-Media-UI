@@ -367,8 +367,8 @@ catalogs:
       specifier: ^1.5.0
       version: 1.5.0
     stylelint-config-standard:
-      specifier: ^36.0.1
-      version: 36.0.1
+      specifier: ^37.0.0
+      version: 37.0.0
     stylelint-order:
       specifier: ^6.0.4
       version: 6.0.4
@@ -812,7 +812,7 @@ importers:
         version: 1.5.0(postcss-html@1.7.0)(stylelint@16.12.0(typescript@5.7.3))
       stylelint-config-standard:
         specifier: 'catalog:'
-        version: 36.0.1(stylelint@16.12.0(typescript@5.7.3))
+        version: 37.0.0(stylelint@16.12.0(typescript@5.7.3))
       stylelint-order:
         specifier: 'catalog:'
         version: 6.0.4(stylelint@16.12.0(typescript@5.7.3))
@@ -6699,12 +6699,14 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.isarguments@3.1.0:
     resolution: {integrity: sha512-chi4NHZlZqZD18a0imDHnZPrDeBbTtVN7GXMwuGdRH9qotxAjYs3aVLKc7zNOG9eddR5Ksd8rvFEBc9SsggPpg==}
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -8660,11 +8662,17 @@ packages:
     peerDependencies:
       stylelint: ^16.1.0
 
-  stylelint-config-standard@36.0.1:
-    resolution: {integrity: sha512-8aX8mTzJ6cuO8mmD5yon61CWuIM4UD8Q5aBcWKGSf6kg+EC3uhB+iOywpTK4ca6ZL7B49en8yanOFtUW0qNzyw==}
+  stylelint-config-recommended@15.0.0:
+    resolution: {integrity: sha512-9LejMFsat7L+NXttdHdTq94byn25TD+82bzGRiV1Pgasl99pWnwipXS5DguTpp3nP1XjvLXVnEJIuYBfsRjRkA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
-      stylelint: ^16.1.0
+      stylelint: ^16.13.0
+
+  stylelint-config-standard@37.0.0:
+    resolution: {integrity: sha512-+6eBlbSTrOn/il2RlV0zYGQwRTkr+WtzuVSs1reaWGObxnxLpbcspCUYajVQHonVfxVw2U+h42azGhrBvcg8OA==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      stylelint: ^16.13.0
 
   stylelint-order@6.0.4:
     resolution: {integrity: sha512-0UuKo4+s1hgQ/uAxlYU4h0o0HS4NiQDud0NAUNI0aa8FJdmYHA5ZZTFHiV5FpmE3071e9pZx5j0QpVJW5zOCUA==}
@@ -17443,10 +17451,14 @@ snapshots:
     dependencies:
       stylelint: 16.12.0(typescript@5.7.3)
 
-  stylelint-config-standard@36.0.1(stylelint@16.12.0(typescript@5.7.3)):
+  stylelint-config-recommended@15.0.0(stylelint@16.12.0(typescript@5.7.3)):
     dependencies:
       stylelint: 16.12.0(typescript@5.7.3)
-      stylelint-config-recommended: 14.0.1(stylelint@16.12.0(typescript@5.7.3))
+
+  stylelint-config-standard@37.0.0(stylelint@16.12.0(typescript@5.7.3)):
+    dependencies:
+      stylelint: 16.12.0(typescript@5.7.3)
+      stylelint-config-recommended: 15.0.0(stylelint@16.12.0(typescript@5.7.3))
 
   stylelint-order@6.0.4(stylelint@16.12.0(typescript@5.7.3)):
     dependencies:
