@@ -5,13 +5,6 @@ import { computed, h, ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import {
-  antdDelete,
-  antdEdit,
-  MdiPlus,
-  MdiRefresh,
-  MdiRestart,
-} from '#/icons/index';
 
 import moment from 'moment';
 import {
@@ -31,6 +24,13 @@ import {
 } from 'naive-ui';
 
 import { fetchDelDevice, fetchDeviceList, fetchSyncInfo } from '#/api/core/gb';
+import {
+  antdDelete,
+  antdEdit,
+  MdiPlus,
+  MdiRefresh,
+  MdiRestart,
+} from '#/icons/index';
 
 import ChannelListModal from '../components/channel-list-modal.vue';
 import DeviceInfoModal from '../components/device-info-modal.vue';

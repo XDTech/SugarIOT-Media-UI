@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           icon: 'ic:outline-health-and-safety',
           title: '菜单权限',
-          authority: ['root'],
+          authority: ['platform_admin'],
         },
       },
       {

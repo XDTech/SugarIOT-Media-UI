@@ -53,6 +53,17 @@ const [Form, formApi] = useVbenForm({
       help: '流媒体服务器IP',
       rules: z.string().min(1, '请输入IP').ip({ message: 'IP格式错误' }),
     },
+
+    {
+      component: 'Input',
+      fieldName: 'remoteIp',
+      label: '公网IP',
+      componentProps: {
+        placeholder: '请输入IP',
+      },
+      help: '流媒体服务器公网IP',
+      rules: z.string().min(1, '请输入公网IP').ip({ message: 'IP格式错误' }),
+    },
     {
       component: 'Input',
       fieldName: 'secret',

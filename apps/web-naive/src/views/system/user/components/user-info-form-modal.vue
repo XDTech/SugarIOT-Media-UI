@@ -2,18 +2,14 @@
 <!-- eslint-disable unused-imports/no-unused-vars -->
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import type { TreeInst, UploadFileInfo } from 'naive-ui';
+
 import { ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import {
-  NButton,
-  NSpace,
-  NUpload,
-  type TreeInst,
-  type UploadFileInfo,
-} from 'naive-ui';
+import { NButton, NSpace, NUpload } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';

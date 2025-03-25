@@ -1,6 +1,16 @@
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
+import type { VbenFormProps } from '@vben/common-ui';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
+
+import { Page, useVbenModal } from '@vben/common-ui';
+
+import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
+
+import { message } from '#/adapter/naive';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { deleteUser, getUserPageList, updateUserAccount } from '#/api';
 import {
   accountEdit,
   antdDelete,
@@ -8,12 +18,6 @@ import {
   userEdit,
   userPwd,
 } from '#/icons/index';
-
-import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
-
-import { message } from '#/adapter/naive';
-import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { deleteUser, getUserPageList, updateUserAccount } from '#/api';
 
 import PasswordFormModal from './components/password-form-modal.vue';
 import UserFormModal from './components/user-form-modal.vue';

@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: '1', // 默认值
   },
+  isLive: {
+    type: Boolean,
+    default: true, // 默认值
+  },
 });
 
 const containerId = ref(`player_box${props.keys}`);
@@ -19,7 +23,7 @@ const playerInfo = ref<any>();
 function playCreate() {
   const container = document.querySelector(`#${containerId.value}`);
   const easyplayer = new (window as any).EasyPlayerPro(container, {
-    isLive: true,
+    isLive: props.isLive,
     bufferTime: 0.2,
     stretch: false,
     MSE: false,

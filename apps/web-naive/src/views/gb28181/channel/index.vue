@@ -1,19 +1,23 @@
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import type { VbenFormProps } from '@vben/common-ui';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
+
 import { ref } from 'vue';
 
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
+import { Page, useVbenModal } from '@vben/common-ui';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   fetchChannelPageList,
   fetchDelChannel,
   fetchSendBye,
 } from '#/api/core/gb';
+import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
 
 import PlayerComponent from '../../player/index.vue';
 import ChannelFormModal from '../components/channel-form-modal.vue';
@@ -464,7 +468,7 @@ function openRegister(id: any) {
       </template>
     </Grid>
 
-    <streamModal />
+    <!-- <streamModal /> -->
 
     <playerModal :title="title" class="h-[600px] w-[800px]">
       <PlayerComponent

@@ -1,16 +1,20 @@
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import type { VbenFormProps } from '@vben/common-ui';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
+
 import { ref } from 'vue';
 
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
+import { Page, useVbenModal } from '@vben/common-ui';
 
 import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { fetchClosePush, fetchDeletePush, fetchPushList } from '#/api';
 import { fetchSendBye } from '#/api/core/gb';
+import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
 import dayjs, { formatDuration } from '#/utils/dayjs-util';
 import { getStreamPrefix } from '#/utils/util';
 

@@ -5,8 +5,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 
-import { Mscopy, MsPlay } from '#/icons/index';
-
 import {
   NButton,
   NFlex,
@@ -22,6 +20,7 @@ import {
 import { message } from '#/adapter/naive';
 import { fetchProxyAddress, fetchPushAddr } from '#/api';
 import { fetchChannelInvite } from '#/api/core/gb';
+import { Mscopy, MsPlay } from '#/icons/index';
 import { copyToClipboard } from '#/utils/util';
 import ptz from '#/views/ptz/index.vue';
 
@@ -163,8 +162,6 @@ function play() {
       <NTabPane name="ptz" tab="远程控制">
         <ptz ref="ptzControl" :item="item" layout="center" />
       </NTabPane>
-      <NTabPane name="info" tab="流信息"> 流信息 </NTabPane>
-      <NTabPane name="voice" tab="语音对讲"> 七里香 </NTabPane>
     </NTabs>
   </NFlex>
 </template>

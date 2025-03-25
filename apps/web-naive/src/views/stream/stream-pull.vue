@@ -1,8 +1,18 @@
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import type { VbenFormProps } from '@vben/common-ui';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
+
 import { ref } from 'vue';
 
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
+
+import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
+
+import { message } from '#/adapter/naive';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { fetchClosePull, fetchDelPull, fetchPullList } from '#/api';
 import {
   antdDelete,
   antdDisconnect,
@@ -10,12 +20,6 @@ import {
   MdiPlus,
   MsPlay,
 } from '#/icons/index';
-
-import { NButton, NPopconfirm, NPopover, NTag, NText } from 'naive-ui';
-
-import { message } from '#/adapter/naive';
-import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
-import { fetchClosePull, fetchDelPull, fetchPullList } from '#/api';
 import { getStreamPrefix } from '#/utils/util';
 
 import PlayerComponent from '../player/index.vue';

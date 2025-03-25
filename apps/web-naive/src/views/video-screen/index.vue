@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { TreeOption } from 'naive-ui';
+
 import { h, ref } from 'vue';
 
 import {
@@ -17,7 +19,6 @@ import {
   NPopover,
   NSpace,
   NTree,
-  type TreeOption,
 } from 'naive-ui';
 import screenfull from 'screenfull';
 
@@ -332,7 +333,6 @@ function itemCallback(item: any) {
           </NButton>
         </NFlex>
       </NFlex>
-      <NLayout />
     </NLayout>
   </div>
 </template>

@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
           title: '录像回放',
         },
         path: '/record/video',
-        component: () => import('#/views/node/zlm/index.vue'),
+        component: () => import('#/views/record/index.vue'),
       },
     ],
   },

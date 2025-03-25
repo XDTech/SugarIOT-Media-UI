@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { SvgZlmLogoIcon } from '#/icons';
+import { SvgZlmLogoIcon } from '#/icons/svg';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -9,6 +9,7 @@ const routes: RouteRecordRaw[] = [
       keepAlive: true,
       order: 800,
       title: '节点管理',
+      authority: ['platform_admin'],
     },
     name: 'node',
 

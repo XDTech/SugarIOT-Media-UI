@@ -20,6 +20,7 @@ export const Mscopy = createIconifyIcon(
 );
 
 export const antdSync = createIconifyIcon('ant-design:cloud-sync-outlined');
+export const mdownload = createIconifyIcon('material-symbols:downloading');
 export const antdEdit = createIconifyIcon('ant-design:edit-outlined');
 export const antdDelete = createIconifyIcon('ant-design:delete-outlined');
 export const userPwd = createIconifyIcon('tdesign:user-password');
@@ -30,5 +31,3 @@ export const userEdit = createIconifyIcon(
 export const antdDisconnect = createIconifyIcon(
   'ant-design:disconnect-outlined',
 );
-
-export const SvgZlmLogoIcon = createIconifyIcon('zlm');

@@ -2,6 +2,7 @@ import { h } from 'vue';
 
 import { useUserStore } from '@vben/stores';
 
+import moment from 'moment';
 import { NIcon, NText } from 'naive-ui';
 
 import { ShieldIcon } from '#/icons/index';
@@ -73,4 +74,29 @@ export async function copyToClipboard(text: string): Promise<boolean> {
 
 export function getStreamPrefix() {
   return `${userStore.userInfo?.tenantCode}_`;
+}
+
+export function formatBytes(bytes: number, decimals = 2) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${Number.parseFloat((bytes / k ** i).toFixed(decimals))} ${sizes[i]}`;
+}
+
+export function timeFormat(time: number) {
+  const duration = moment.duration(time, 'seconds');
+  const hours = Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.minutes());
+  const seconds = Math.floor(duration.seconds());
+  const formattedDuration =
+    (hours > 0 ? `${hours}小时 ` : '') +
+    (minutes > 0 ? `${minutes}分钟 ` : '') +
+    (seconds > 0 ? `${seconds}秒` : '');
+
+  return formattedDuration;
+}
+
+export function dateFormat(date: string) {
+  return moment.unix(Number(date)).format('YYYY-MM-DD HH:mm:ss');
 }
