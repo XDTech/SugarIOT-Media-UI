@@ -149,9 +149,7 @@ function getContent(type: string) {
         </NDescriptionsItem>
         <NDescriptionsItem label="SIP服务器地址">
           <NText depth="3">
-            {{
-              device.netType === 'private_type' ? config.ip : config.remoteIp
-            }}
+            {{ device.netType === 'private_net' ? config.ip : config.remoteIp }}
           </NText>
         </NDescriptionsItem>
         <NDescriptionsItem label="SIP服务器端口">
