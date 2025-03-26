@@ -39,9 +39,9 @@ const formOptions: VbenFormProps = {
       component: 'Input',
       fieldName: 'name',
       componentProps: {
-        placeholder: '请输入名称',
+        placeholder: '请输入通道名称',
       },
-      label: '名称',
+      label: '通道名称',
     },
   ],
   // 控制表单是否显示折叠按钮

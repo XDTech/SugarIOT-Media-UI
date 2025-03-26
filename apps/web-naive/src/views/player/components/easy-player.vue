@@ -18,6 +18,8 @@ const props = defineProps({
 
 const containerId = ref(`player_box${props.keys}`);
 
+const curr_url = ref();
+
 const playerInfo = ref<any>();
 
 function playCreate() {
@@ -26,7 +28,7 @@ function playCreate() {
     isLive: props.isLive,
     bufferTime: 0.2,
     stretch: false,
-    MSE: false,
+    MSE: true,
     WCS: true,
     hasAudio: true,
     debug: false,
@@ -45,6 +47,7 @@ function playCreate() {
   });
   easyplayer.on('error', (_err: any) => {
     console.error('error', _err);
+    replay(curr_url.value);
   });
 
   easyplayer.on('playbackSeek', (data: any) => {
@@ -72,9 +75,11 @@ async function destory() {
   }
 }
 function play(url: string) {
+  curr_url.value = url;
   playerInfo.value?.play(url);
 }
 async function replay(url: string) {
+  curr_url.value = url;
   await destory();
   playCreate();
   await playerInfo.value?.play(url);
