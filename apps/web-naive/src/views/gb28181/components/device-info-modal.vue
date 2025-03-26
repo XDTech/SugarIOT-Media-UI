@@ -174,7 +174,7 @@ function getContent(type: string) {
           </NText>
         </NDescriptionsItem>
         <NDescriptionsItem label="心跳周期">
-          <NText depth="3"> 1-60(秒) </NText>
+          <NText depth="3"> 10(秒) </NText>
         </NDescriptionsItem>
       </NDescriptions>
 
