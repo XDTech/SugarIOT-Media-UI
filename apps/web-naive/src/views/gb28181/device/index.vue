@@ -31,6 +31,7 @@ import {
   MdiRefresh,
   MdiRestart,
 } from '#/icons/index';
+import { copyToClipboard } from '#/utils/util';
 
 import ChannelListModal from '../components/channel-list-modal.vue';
 import DeviceInfoModal from '../components/device-info-modal.vue';
@@ -119,14 +120,10 @@ function openRegister() {
 
 function registerDevice() {}
 
-async function copyToClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
+async function copy(text: string) {
+  await copyToClipboard(text); // 将文本写入剪贴板
 
-    message.success('复制成功');
-  } catch {
-    message.success('复制失败');
-  }
+  message.success('复制成功');
 }
 
 function getContent(type: string) {
@@ -340,7 +337,7 @@ function openInfo(item: any) {
                 <NTag
                   style="cursor: pointer"
                   type="success"
-                  @click="copyToClipboard(item.deviceId)"
+                  @click="copy(item.deviceId)"
                 >
                   {{ item.deviceId }}
                 </NTag>

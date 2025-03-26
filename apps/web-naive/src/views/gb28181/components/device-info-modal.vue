@@ -34,6 +34,7 @@ const defaultDevice = {
   deviceName: '',
   manufacturer: '',
   firmware: '',
+  netType: '',
   model: '',
   channel: 0, // 默认通道为 0
   syncTime: '',
@@ -148,8 +149,9 @@ function getContent(type: string) {
         </NDescriptionsItem>
         <NDescriptionsItem label="SIP服务器地址">
           <NText depth="3">
-            {{ config.ip }}(内) <br />
-            {{ config.remoteIp }}(外) <br />
+            {{
+              device.netType === 'private_type' ? config.ip : config.remoteIp
+            }}
           </NText>
         </NDescriptionsItem>
         <NDescriptionsItem label="SIP服务器端口">

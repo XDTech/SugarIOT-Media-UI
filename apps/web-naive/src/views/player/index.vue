@@ -106,13 +106,9 @@ async function createProxy() {
 }
 // 复制
 async function copy(text: string) {
-  const res = await copyToClipboard(text); // 将文本写入剪贴板
+  await copyToClipboard(text); // 将文本写入剪贴板
 
-  if (res) {
-    message.success('复制成功');
-  } else {
-    message.success('复制失败');
-  }
+  message.success('复制成功');
 }
 
 function play() {

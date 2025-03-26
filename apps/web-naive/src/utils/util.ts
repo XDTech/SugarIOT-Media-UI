@@ -1,4 +1,5 @@
 import { h } from 'vue';
+import useClipboard from 'vue-clipboard3';
 
 import { useUserStore } from '@vben/stores';
 
@@ -6,6 +7,8 @@ import moment from 'moment';
 import { NIcon, NText } from 'naive-ui';
 
 import { ShieldIcon } from '#/icons/index';
+
+const { toClipboard } = useClipboard();
 
 export function listToTree(list: any) {
   // 创建一个 Map 来保存所有的节点，以便按 id 查找
@@ -63,14 +66,13 @@ export function listToTree(list: any) {
 
 const userStore = useUserStore();
 
-export async function copyToClipboard(text: string): Promise<boolean> {
+export const copyToClipboard = async (text: any) => {
   try {
-    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
-    return true;
-  } catch {
-    return false;
+    await toClipboard(text); // 实现复制
+  } catch (error) {
+    console.error(error);
   }
-}
+};
 
 export function getStreamPrefix() {
   return `${userStore.userInfo?.tenantCode}_`;

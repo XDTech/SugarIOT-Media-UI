@@ -286,7 +286,7 @@ async function copyToClipboard(text: string) {
 
     message.success('复制成功');
   } catch {
-    message.success('复制失败');
+    message.error('复制失败');
   }
 }
 

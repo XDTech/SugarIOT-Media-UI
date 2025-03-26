@@ -104,6 +104,27 @@ const [Form, formApi] = useVbenForm({
       rules: 'selectRequired',
     },
     {
+      component: 'Select',
+      fieldName: 'netType',
+      label: '连接方式',
+      componentProps: {
+        placeholder: '请选择连接方式',
+        options: [
+          {
+            label: '公网',
+            value: 'public_net',
+          },
+          {
+            label: '内网',
+            value: 'private_net',
+          },
+        ],
+      },
+      help: '设备类型',
+
+      rules: 'selectRequired',
+    },
+    {
       component: 'Input',
       fieldName: 'pwd',
       label: '密码',
@@ -200,7 +221,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <Modal class="h-[520px] w-[650px]">
+  <Modal class="h-[580px] w-[650px]">
     <Form />
 
     <template #footer>

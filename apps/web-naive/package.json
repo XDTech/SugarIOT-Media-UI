@@ -54,6 +54,7 @@
     "relativeTime": "link:dayjs/plugin/relativeTime",
     "screenfull": "^6.0.2",
     "vue": "catalog:",
+    "vue-clipboard3": "^2.0.0",
     "vue-hooks-plus": "^2.2.1",
     "vue-json-pretty": "^2.4.0",
     "vue-json-viewer": "3",
