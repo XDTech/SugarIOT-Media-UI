@@ -161,7 +161,7 @@ function getStatus(item: any) {
             default: () => item.name,
             value: () =>
               h('span', {
-                class: 'icon-[line-md--sunny-twotone-loop]',
+                class: 'icon-[line-md--sun-rising-loop]',
               }),
           },
         ),

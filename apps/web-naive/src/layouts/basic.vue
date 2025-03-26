@@ -222,7 +222,7 @@ watch(latestMessage, (msg: MessageEvent) => {
           <span class="icon-[line-md--downloading-loop]"></span>
           <NTooltip trigger="hover">
             <template #trigger>
-              <NText depth="3" style="width: 80px">
+              <NText depth="3">
                 {{ downloadSpeed }}
               </NText>
             </template>

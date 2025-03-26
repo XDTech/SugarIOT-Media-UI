@@ -51,7 +51,7 @@ const onlineIcon = h(
   {
     value: () =>
       h('span', {
-        class: 'icon-[line-md--sunny-twotone-loop]',
+        class: 'icon-[line-md--sun-rising-loop]',
       }),
   },
 );
