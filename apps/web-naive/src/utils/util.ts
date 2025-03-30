@@ -6,6 +6,7 @@ import { useUserStore } from '@vben/stores';
 import moment from 'moment';
 import { NIcon, NText } from 'naive-ui';
 
+import { message } from '#/adapter/naive';
 import { ShieldIcon } from '#/icons/index';
 
 const { toClipboard } = useClipboard();
@@ -67,8 +68,13 @@ export function listToTree(list: any) {
 const userStore = useUserStore();
 
 export const copyToClipboard = async (text: any) => {
+  if (!text) {
+    return message.warning('没有可复制内容');
+  }
   try {
     await toClipboard(text); // 实现复制
+
+    message.success('复制成功');
   } catch (error) {
     console.error(error);
   }

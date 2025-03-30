@@ -14,9 +14,15 @@ import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { fetchClosePush, fetchDeletePush, fetchPushList } from '#/api';
 import { fetchSendBye } from '#/api/core/gb';
-import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
+import {
+  antdDelete,
+  antdDisconnect,
+  antdEdit,
+  MsPlay,
+  SecurityIcon,
+} from '#/icons/index';
 import dayjs, { formatDuration } from '#/utils/dayjs-util';
-import { getStreamPrefix } from '#/utils/util';
+import { copyToClipboard, getStreamPrefix } from '#/utils/util';
 
 import PlayerComponent from '../player/index.vue';
 import StreamPushFormModal from './components/stream-push-form-modal.vue';
@@ -131,7 +137,7 @@ const gridOptions: VxeGridProps<RowType> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: '操作',
-      width: 300,
+      width: 200,
     },
   ],
   height: 'auto',
@@ -256,16 +262,6 @@ function playSuccess(_id: string) {
   //   item.status = '0';
   // }
 }
-
-async function copyToClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
-
-    message.success('复制成功');
-  } catch {
-    message.success('复制失败');
-  }
-}
 </script>
 
 <template>
@@ -331,7 +327,21 @@ async function copyToClipboard(text: string) {
           </template>
           <span>播放流</span>
         </NPopover>
-
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NButton
+              circle
+              quaternary
+              type="primary"
+              @click="copyToClipboard(row.secret)"
+            >
+              <template #icon>
+                <SecurityIcon />
+              </template>
+            </NButton>
+          </template>
+          <span>复制鉴权码</span>
+        </NPopover>
         <NPopover trigger="hover">
           <template #trigger>
             <NPopconfirm @positive-click="closePlayer(row)">

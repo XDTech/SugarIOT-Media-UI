@@ -17,7 +17,14 @@ import {
   fetchDelChannel,
   fetchSendBye,
 } from '#/api/core/gb';
-import { antdDelete, antdDisconnect, antdEdit, MsPlay } from '#/icons/index';
+import {
+  antdDelete,
+  antdDisconnect,
+  antdEdit,
+  MsPlay,
+  SecurityIcon,
+} from '#/icons/index';
+import { copyToClipboard } from '#/utils/util';
 
 import PlayerComponent from '../../player/index.vue';
 import ChannelFormModal from '../components/channel-form-modal.vue';
@@ -280,16 +287,6 @@ function playSuccess(id: string) {
   }
 }
 
-async function copyToClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
-
-    message.success('复制成功');
-  } catch {
-    message.error('复制失败');
-  }
-}
-
 function openRegister(id: any) {
   operator.value = 'edit';
 
@@ -454,6 +451,22 @@ function openRegister(id: any) {
             </NButton>
           </template>
           <span>编辑</span>
+        </NPopover>
+
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NButton
+              circle
+              quaternary
+              type="primary"
+              @click="copyToClipboard(row.secret)"
+            >
+              <template #icon>
+                <SecurityIcon />
+              </template>
+            </NButton>
+          </template>
+          <span>复制鉴权码</span>
         </NPopover>
         <NPopconfirm @positive-click="deleteItem(row.id)">
           <template #trigger>

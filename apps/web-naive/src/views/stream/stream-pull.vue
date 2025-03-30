@@ -19,8 +19,9 @@ import {
   antdEdit,
   MdiPlus,
   MsPlay,
+  SecurityIcon,
 } from '#/icons/index';
-import { getStreamPrefix } from '#/utils/util';
+import { copyToClipboard, getStreamPrefix } from '#/utils/util';
 
 import PlayerComponent from '../player/index.vue';
 import StreamPullFormModal from './components/stream-pull-form-modal.vue';
@@ -152,7 +153,7 @@ const gridOptions: VxeGridProps<RowType> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: '操作',
-      width: 300,
+      width: 200,
     },
   ],
   height: 'auto',
@@ -277,16 +278,6 @@ function playSuccess(id: string) {
   const item = data.find((item) => item.id === id);
   if (item && item.status === '1') {
     item.status = '0';
-  }
-}
-
-async function copyToClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text); // 将文本写入剪贴板
-
-    message.success('复制成功');
-  } catch {
-    message.success('复制失败');
   }
 }
 </script>
@@ -444,6 +435,22 @@ async function copyToClipboard(text: string) {
             <antdEdit />
           </template>
         </NButton>
+
+        <NPopover trigger="hover">
+          <template #trigger>
+            <NButton
+              circle
+              quaternary
+              type="primary"
+              @click="copyToClipboard(row.secret)"
+            >
+              <template #icon>
+                <SecurityIcon />
+              </template>
+            </NButton>
+          </template>
+          <span>复制鉴权码</span>
+        </NPopover>
 
         <NPopconfirm @positive-click="deleteItem(row.id)">
           <template #trigger>
