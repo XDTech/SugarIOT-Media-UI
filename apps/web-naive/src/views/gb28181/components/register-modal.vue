@@ -120,7 +120,7 @@ const [Form, formApi] = useVbenForm({
           },
         ],
       },
-      help: '设备类型',
+      help: '通过那种方式对接',
 
       rules: 'selectRequired',
     },

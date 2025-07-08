@@ -11,6 +11,11 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     loginExpiredMode: 'modal',
   },
+
+  logo: {
+    enable: true,
+    source: '/image.png',
+  },
   copyright: {
     date: '2025',
     companyName: '潍坊信达胜宇信息科技有限公司',

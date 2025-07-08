@@ -2,21 +2,14 @@
 <!-- eslint-disable unused-imports/no-unused-vars -->
 <!-- eslint-disable no-unused-vars -->
 <script lang="ts" setup>
+import type { TreeInst, TreeOption, UploadFileInfo } from 'naive-ui';
+
 import { h, ref } from 'vue';
 import { useBoolean } from 'vue-hooks-plus';
 
 import { useVbenModal } from '@vben/common-ui';
-import { MsFolder, MsFolderExpand } from '#/icons/index';
 
-import {
-  NButton,
-  NIcon,
-  NSpace,
-  NUpload,
-  type TreeInst,
-  type TreeOption,
-  type UploadFileInfo,
-} from 'naive-ui';
+import { NButton, NIcon, NSpace, NUpload } from 'naive-ui';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { message } from '#/adapter/naive';
@@ -27,6 +20,7 @@ import {
   getRole,
   getRoleList,
 } from '#/api';
+import { MsFolder, MsFolderExpand } from '#/icons/index';
 import { getBaseUrl } from '#/utils/base';
 import { listToTree } from '#/utils/util';
 
@@ -170,37 +164,37 @@ const [Form, formApi] = useVbenForm({
       },
     },
 
-    {
-      component: 'ApiTreeSelect',
-      fieldName: 'departmentId',
-      label: '部门',
-      componentProps: {
-        placeholder: '请选择部门',
-        api: fetchDepartmentList,
-        labelField: 'name',
-        valueField: 'id',
-        childrenField: 'children',
-        filterable: true,
-        checkable: true,
-      },
-    },
+    // {
+    //   component: 'ApiTreeSelect',
+    //   fieldName: 'departmentId',
+    //   label: '部门',
+    //   componentProps: {
+    //     placeholder: '请选择部门',
+    //     api: fetchDepartmentList,
+    //     labelField: 'name',
+    //     valueField: 'id',
+    //     childrenField: 'children',
+    //     filterable: true,
+    //     checkable: true,
+    //   },
+    // },
 
-    {
-      component: 'ApiTreeSelect',
-      fieldName: 'roles',
-      label: '角色',
-      componentProps: {
-        placeholder: '请选择角色',
-        api: fetchRoleList,
-        labelField: 'name',
-        valueField: 'id',
-        multiple: true,
-        childrenField: 'children',
-        filterable: true,
-        checkable: true,
-        'ax-tag-count': 2,
-      },
-    },
+    // {
+    //   component: 'ApiTreeSelect',
+    //   fieldName: 'roles',
+    //   label: '角色',
+    //   componentProps: {
+    //     placeholder: '请选择角色',
+    //     api: fetchRoleList,
+    //     labelField: 'name',
+    //     valueField: 'id',
+    //     multiple: true,
+    //     childrenField: 'children',
+    //     filterable: true,
+    //     checkable: true,
+    //     'ax-tag-count': 2,
+    //   },
+    // },
 
     {
       component: 'RadioGroup',

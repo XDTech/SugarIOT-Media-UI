@@ -50,7 +50,7 @@ const options = ref<any[]>([]);
 async function createProxy() {
   try {
     let data: any = null;
-    console.log('props.types', props.types);
+
     switch (props.types) {
       case 'gb': {
         data = await fetchChannelInvite(item.value.id);

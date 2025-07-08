@@ -46,12 +46,12 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'Input',
       fieldName: 'ip',
-      label: 'IP',
+      label: '内网IP',
       componentProps: {
-        placeholder: '请输入IP',
+        placeholder: '请输入内网IP',
       },
       help: '流媒体服务器IP',
-      rules: z.string().min(1, '请输入IP').ip({ message: 'IP格式错误' }),
+      rules: z.string().min(1, '请输入内网IP').ip({ message: 'IP格式错误' }),
     },
 
     {
@@ -74,11 +74,26 @@ const [Form, formApi] = useVbenForm({
       help: 'ZLM配置文件中的Secret',
       rules: 'required',
     },
+
+    {
+      component: 'InputNumber',
+      fieldName: 'remoteRtpPort',
+      label: 'RTP端口',
+      help: '映射到外网的RTP端口',
+      defaultValue: 10_000,
+      componentProps: {
+        placeholder: '请输入RTP端口',
+        min: 1,
+        precision: 0,
+      },
+      rules: 'required',
+    },
     {
       component: 'InputNumber',
       fieldName: 'httpPort',
       label: 'Http端口',
       help: 'ZLM配置文件中的Http端口号',
+      defaultValue: 8083,
       componentProps: {
         placeholder: '请输入http端口',
         min: 1,
@@ -90,6 +105,7 @@ const [Form, formApi] = useVbenForm({
       component: 'InputNumber',
       fieldName: 'httpsPort',
       label: 'Https端口',
+      defaultValue: 443,
       help: 'ZLM配置文件中的Https端口号',
       componentProps: {
         placeholder: '请输入https端口',

@@ -121,37 +121,37 @@ const [Form, formApi] = useVbenForm({
       },
     },
 
-    {
-      component: 'ApiTreeSelect',
-      fieldName: 'departmentId',
-      label: '部门',
-      componentProps: {
-        placeholder: '请选择部门',
-        api: fetchDepartmentList,
-        labelField: 'name',
-        valueField: 'id',
-        childrenField: 'children',
-        filterable: true,
-        checkable: true,
-      },
-    },
+    // {
+    //   component: 'ApiTreeSelect',
+    //   fieldName: 'departmentId',
+    //   label: '部门',
+    //   componentProps: {
+    //     placeholder: '请选择部门',
+    //     api: fetchDepartmentList,
+    //     labelField: 'name',
+    //     valueField: 'id',
+    //     childrenField: 'children',
+    //     filterable: true,
+    //     checkable: true,
+    //   },
+    // },
 
-    {
-      component: 'ApiTreeSelect',
-      fieldName: 'roles',
-      label: '角色',
-      componentProps: {
-        placeholder: '请选择角色',
-        api: fetchRoleList,
-        labelField: 'name',
-        valueField: 'id',
-        multiple: true,
-        childrenField: 'children',
-        filterable: true,
-        checkable: true,
-        'ax-tag-count': 2,
-      },
-    },
+    // {
+    //   component: 'ApiTreeSelect',
+    //   fieldName: 'roles',
+    //   label: '角色',
+    //   componentProps: {
+    //     placeholder: '请选择角色',
+    //     api: fetchRoleList,
+    //     labelField: 'name',
+    //     valueField: 'id',
+    //     multiple: true,
+    //     childrenField: 'children',
+    //     filterable: true,
+    //     checkable: true,
+    //     'ax-tag-count': 2,
+    //   },
+    // },
 
     {
       component: 'RadioGroup',
