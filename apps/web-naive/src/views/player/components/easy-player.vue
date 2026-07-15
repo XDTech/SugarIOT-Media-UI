@@ -32,6 +32,7 @@ function playCreate() {
     WCS: true,
     hasAudio: true,
     debug: false,
+
     // poster: '/static/zlm.png',
   });
 

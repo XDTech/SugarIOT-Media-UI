@@ -141,12 +141,12 @@ const gridOptions: VxeGridProps<any> = {
       slots: { default: 'startTime' },
       width: 300,
     },
-    {
-      field: 'createdAt',
-      title: '结束时间',
-      formatter: 'formatDateTime',
-      width: 300,
-    },
+    // {
+    //   field: 'createdAt',
+    //   title: '结束时间',
+    //   formatter: 'formatDateTime',
+    //   width: 300,
+    // },
     {
       field: 'action',
       fixed: 'right',
